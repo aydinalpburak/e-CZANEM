@@ -6,6 +6,7 @@ import CategoriesStack from "./CategoriesStack";
 import SearchStack from "./SearchStack";
 import FavoritesStack from "./FavoritesStack";
 import SettingsStack from "./SettingsStack";
+import MapStack from "./MapStack";
 import { Icon } from "react-native-elements";
 
 const Tab = createBottomTabNavigator();
@@ -55,13 +56,20 @@ export default function BottomNavigator(){
               <Icon type="ionicon" name="basket-outline" color={ props.color }/>
             )
           }}/>
+        <Tab.Screen name="MapStack" component={MapStack}
+          options={{
+            title: "Harita",
+            tabBarIcon: (props) => (
+              <Icon type="material-icons" name="map" color={ props.color }/>
+            )
+        }}/>
         <Tab.Screen name="SettingsStack" component={SettingsStack}
           options={{
             title: "Ayarlar",
             tabBarIcon: (props) => (
               <Icon type="material-icons" name="settings" color={ props.color }/>
             )
-          }}/>
+          }}/>          
       </Tab.Navigator>
     </NavigationContainer>
   );

@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import HelloWorldApp from './screens/anasayfa';
 import getRequest from './assets/component/getRequest';
 import { postRequest } from './assets/component/postRequest';
+import Maps from './screens/MapScreen';
 
 export default function App() {
 
