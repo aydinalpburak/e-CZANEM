@@ -21,7 +21,7 @@ const FavoritesStack = () => (
     <Stack.Screen
       name="Favorites"
       options={({navigation, route}) => ({
-        title: "Favorites",
+        title: "Sepet",
       })}
     >
       {(props) => <Favorites {...props}/>}

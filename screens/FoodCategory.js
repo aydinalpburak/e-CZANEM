@@ -4,7 +4,7 @@ import { useState } from "react";
 import { FlatList } from "react-native";
 import { View } from "react-native";
 import FoodCard from "../assets/component/foodCard";
-import { categoryFoods } from "../assets/controller/query";
+import categoryFoods from "../assets/controller/query";
 import window from "../assets/controller/window";
 import globalStyles from "../assets/styles/globalStyles";
 

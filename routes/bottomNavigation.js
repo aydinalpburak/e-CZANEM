@@ -29,35 +29,35 @@ export default function BottomNavigator(){
       >
         <Tab.Screen name="DiscoverStack" component={ DiscoverStack }
           options={{
-            title: "Discover",
+            title: "Ürünler",
             tabBarIcon: (props) => (
-              <Icon type="ionicon" name="fast-food-outline" color={ props.color }/>
+              <Icon type="ionicon" name="bandage-outline" color={ props.color }/>
             )
           }}/>
         <Tab.Screen name="CategoriesStack" component={CategoriesStack}
           options={{
-            title: "Categories",
+            title: "Katagoriler",
             tabBarIcon: (props) => (
-              <Icon type="material-icons" name="restaurant" color={ props.color }/>
+              <Icon type="ionicon" name="grid-outline" color={ props.color }/>
             )
           }}/>
         <Tab.Screen name="SearchStack" component={SearchStack}
           options={{
-            title: "Search",
+            title: "Arama",
             tabBarIcon: (props) => (
               <Icon type="material-icons" name="search" color={ props.color }/>
             )
           }}/>
-        <Tab.Screen name="FavoritesStack" component={SettingsStack}
+        <Tab.Screen name="FavoritesStack" component={FavoritesStack}
           options={{
             title: "Sepet",
             tabBarIcon: (props) => (
-              <Icon type="material-icons" name="favorite-outline" color={ props.color }/>
+              <Icon type="ionicon" name="basket-outline" color={ props.color }/>
             )
           }}/>
         <Tab.Screen name="SettingsStack" component={SettingsStack}
           options={{
-            title: "Settings",
+            title: "Ayarlar",
             tabBarIcon: (props) => (
               <Icon type="material-icons" name="settings" color={ props.color }/>
             )

@@ -20,6 +20,7 @@ function compareStrings(a, b) {
 
   return (a < b) ? -1 : (a > b) ? 1 : 0;
 }
+var baseUrlString = 'https://drive.google.com/uc?export=view&id='; 
 
 export default function FoodView({ navigation, route }) {
   const [food, setFood] = useState(route.params);
@@ -38,7 +39,7 @@ export default function FoodView({ navigation, route }) {
   return (
     <ScrollView style={ globalStyles.screen }>
       <View>
-        <Image source={ food.image } style={ styles.image } />
+        <Image source={{uri: baseUrlString + food.image1}} style={ styles.image } />
         <View style={ styles.favoriteButtonContainer }>
           <FavoriteButton id={ food.id }/>
         </View>
@@ -67,19 +68,7 @@ export default function FoodView({ navigation, route }) {
             )}
           </View>
           <View style={ styles.divider }></View>
-          <View style={ styles.foodSocials }>
-            <View style={ styles.foodSocialLogo }>
-              <Icon size={ 24 } color="#444" type="material-icons" name="public" onPress={() => Linking.openURL(food.link)}/>
-            </View>
-            {food.video != null ? (
-              <View style={ styles.foodSocialLogo }>
-                <Icon size={ 24 } color="#444" type="ionicon" name="logo-youtube" onPress={() => Linking.openURL(food.video)}/>
-              </View>
-            ) : (
-              null
-            )}
-          </View>
-          <Text style={ styles.foodAuthor }>Recipe By: { food.author }</Text>
+          <Text style={ styles.foodAuthor }>Uretici Firma: { food.author }</Text>
           <View style={ styles.divider }></View>
           <ScrollView
             horizontal={ true }
@@ -98,7 +87,6 @@ export default function FoodView({ navigation, route }) {
               width: 16,
             }}></View>
           </ScrollView>
-          <View style={ styles.divider }></View>
           <FoodRecipe recipe={ food.recipe }/>
         </View>
       </View>

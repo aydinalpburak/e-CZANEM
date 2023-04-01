@@ -1,5 +1,4 @@
 import PinoyFoods from "../FoodsDB/foodsDB";
-import Ingredients from "../FoodsDB/ingedientDB";
 import foodCategory from "../FoodsDB/foodCategories";
 
 function compareStrings(a, b) {
@@ -18,8 +17,7 @@ export async function discoverFoodCategories(){
   let result = [];
   for(let i = 1; i < foodCategory.length; i++){
     let foods = PinoyFoods.filter(({ type }) => type.find((str) => str == foodCategory[i].name));
-    result.push(foodCategory[i]);
-    //if(foods.length >= 5) result.push(foodCategory[i]); //
+    if(foods.length >= 1) result.push(foodCategory[i]); //eger bir katogoride 1 urun veya daha fazlasi var ise onu ekrana bas...
     // console.log(`${ foodCategory[i].name }: ${ foods.length }`);
   }
   return(result);
@@ -31,7 +29,7 @@ export async function discoverFoods(category = "Main Course") {
 }
 
 export async function favoriteFoods(favorites = []){
-  let foods = [];
+  let foods = []; //todo axios ile buraya foodlari versek ? 
   // console.log(`FavList:`, favorites);
   for(let i = 0; i < favorites.length; i++) {
     let result = PinoyFoods.filter((food) => food.id == favorites[i]);

@@ -8,17 +8,17 @@ import AppContext from "../globals/appContext";
 export default function FavoriteButton({ id }){
   const favorites = useContext(AppContext); // burayi arastir bakalim
 
-  if((favorites.favs.find((food) => food == id) ? true : false) == true){
+  if((favorites?.favs.find((food) => food.id == id) ? true : false) == true){
     return(
       <TouchableOpacity
         activeOpacity={ 0.5 }
         onPress={ () => favorites.deleteFavorites(id) }
       >
         <Icon
-          type="material-icons"
-          name="favorite"                //favoriye eklendiginde burasi 
-          color="red"
-          size={ 40 }
+          type="ionicon"
+          name="basket"                //favoriye eklendiginde burasi 
+          color="#007A6B"
+          size={ 35 }
         />
       </TouchableOpacity>
     );
@@ -29,10 +29,10 @@ export default function FavoriteButton({ id }){
         onPress={ () => favorites.addFavorites(id) }
       >
         <Icon
-          type="material-icons"
-          name="favorite-outline"  //facoriden cikarildiginida burasi
-          color="blue"
-          size={ 40 }
+          type="ionicon"
+          name="basket-outline"    //facoriden cikarildiginida burasi
+          color="black"
+          size={ 35 }
         />
       </TouchableOpacity>
     );

@@ -37,23 +37,7 @@ export default function FoodRecipe({ recipe }) {
 
   return(
     <View style={ styles.recipeContainer }>
-      <FoodRecipeDetails style={ styles.recipeBranchContainer } details={ recipe.details }/>
-      <View style={ styles.divider }></View>
-      <View style={ styles.ingredientsContainer }>
-        <Text style={ styles.ingredientsLabel }>Ingredients</Text>
-        <View>
-          {recipe.ingredients.map((ingredient, index) => {
-            return(
-              <FoodIngredient
-                key={ index }
-                ingredient={ ingredient }
-                ingredientImage={ ingredients[index] }
-                index={ index }
-              />
-            );
-          })}
-        </View>
-      </View>
+ 
       <View style={ styles.divider }></View>
       <View style={ styles.instructionsContainer }>
         <Text style={ styles.instructionsLabel }>Instructions</Text>
@@ -124,7 +108,7 @@ export default function FoodRecipe({ recipe }) {
         <View>
           <View style={ styles.nutritionContainer }>
             <View style={ [ styles.nutritionWrapper, tableStyles.container, tableStyles.border] }>
-              <Text style={ tableStyles.title }>Nutrition</Text>
+              <Text style={ tableStyles.title }>ICINDEKILER</Text>
               {recipe.nutrition.map((nutri, index) => {
                 return(
                   <View key={ index } style={ tableStyles.twoColumns }>

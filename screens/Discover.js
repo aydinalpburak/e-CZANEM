@@ -8,6 +8,8 @@ import { Icon } from "react-native-elements";
 import HorizontalCardsContainer from "../assets/component/horizontalCardsContainer";
 import { discoverFoodCategories } from "../assets/controller/query";
 import globalStyles from "../assets/styles/globalStyles";
+import getRequest from "../assets/component/getRequest";
+import { Alert } from "react-native";
 
 function shuffle(array) {
   let currentIndex = array.length,  randomIndex;
@@ -24,7 +26,9 @@ function shuffle(array) {
   return array;
 }
 
+ //burada islemlerini yapabiliriz... ekleme 
 export default function Discover({ navigation, route }) {
+  const [posts, setPosts] = useState([]);
   const [ discoverCategories, setDiscoverCategories ] = useState([]);
 
   React.useLayoutEffect(() => {
@@ -44,11 +48,18 @@ export default function Discover({ navigation, route }) {
       ),
     });
   }, [navigation]);
-
+ 
   useEffect(() => {
+    const fetchPosts = async () => {
+    const postsData = await getRequest('http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/getAllProducts'); // url gelecek
+      if (postsData) {
+        setPosts(postsData);
+      }
+    };
+    fetchPosts();
     discoverFoodCategories()
       .then(data => {
-        setDiscoverCategories((shuffle(data)).splice(0, data.length < 8 ? data.length : 8));
+        setDiscoverCategories((shuffle(data)).splice(0, data.length < 8 ? data.length : 8)); //bu hala static kalmis
       })
       .catch(error => {
         alert(error)
@@ -60,7 +71,7 @@ export default function Discover({ navigation, route }) {
       <View style = { styles.horizontalCardsContainer }>
         { discoverCategories.map((category, index) => {
           return(
-            <HorizontalCardsContainer key={ index } navigation={ navigation } route={ route } foodCategory={ category }/>
+            <HorizontalCardsContainer key={ index } navigation={ navigation } route={ route } foodCategory={ category } yeni={posts} />
           )
         })}
       </View>

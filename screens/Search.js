@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { useEffect } from "react";
 import { Text } from "react-native";
 import { TextInput } from "react-native";
 import { StyleSheet } from "react-native";
@@ -10,6 +11,10 @@ import FoodCard from "../assets/component/foodCard";
 import window from "../assets/controller/window";
 import PinoyFoods from "../assets/FoodsDB/foodsDB";
 import globalStyles from "../assets/styles/globalStyles";
+import getRequest from "../assets/component/getRequest";
+import { bool } from "prop-types";
+
+let isFirstOpen = true;
 
 function compareStrings(a, b) {
   a = a.toLowerCase();
@@ -59,16 +64,32 @@ function matchKeywords(wordToMatch, keywords){
 }
 
 export default function Search({ navigation, route }) {
-  const [foods, setFoods] = useState(PinoyFoods.sort((a, b) => {
+  const [searchText, setSearchText] = useState(null);
+  const [posts, setPosts] = useState([]);
+  const [foods, setFoods] = useState(posts.sort((a, b) => {
     return compareStrings(a.name, b.name);
   }));
-  const [searchText, setSearchText] = useState(null);
+  useEffect(() => {
+    console.log("istek atti");
+    const fetchPosts = async () => {
+    const postsData = await getRequest('http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/getAllProducts'); // url gelecek
+      if (postsData) {
+        setPosts(postsData);
+        if(isFirstOpen){console.log("food first girdi"); setFoods(postsData); isFirstOpen= false;}
+        console.log(posts);
+      }
+    };
+    fetchPosts();
+    
+    
+  }, [searchText]);
+
 
   const onChange = (string) => {
     let word = string.replace(/[^a-zA-Z -]/g, '');
     setSearchText(word);
-    if(word.length > 0) setFoods(findMatches(word, PinoyFoods));
-    else setFoods(PinoyFoods.sort((a, b) => {
+    if(word.length > 0) setFoods(findMatches(word, posts));
+    else setFoods(posts.sort((a, b) => { //bakilmasi lazim ilk acildiginda ekrana gelen kisim burasi
       return compareStrings(a.name, b.name);
     }));
   };
@@ -99,28 +120,28 @@ export default function Search({ navigation, route }) {
 
   return(
     <View style={ globalStyles.screen }>
-      { foods.length >= 1 ? (
+      { true ? (
         <FlatList
-          persistentScrollbar={ true }
-          data={ foods }
-          ListHeaderComponent={() => (
-            <View
-              style={{
-                height: 12,
-              }}
-            ></View>
-          )}
-          ListFooterComponent={() => (
-            <View
-              style={{
-                height: 12,
-              }}
-            ></View>
-          )}
-          renderItem={({ item }) => (
-            <FoodCard food={ item } navigation={ navigation } route={ route }/>
-          )}
-        />
+        persistentScrollbar={ true }
+        data={ foods }
+        ListHeaderComponent={() => (
+          <View
+            style={{
+              height: 12,
+            }}
+          ></View>
+        )}
+        ListFooterComponent={() => (
+          <View
+            style={{
+              height: 12,
+            }}
+          ></View>
+        )}
+        renderItem={({ item }) => (        
+          <FoodCard food={ item } navigation={ navigation } route={ route }/> //todo
+        )}
+      />      
       ) : (
         <View style={ styles.emptyContainer }>
           <Icon

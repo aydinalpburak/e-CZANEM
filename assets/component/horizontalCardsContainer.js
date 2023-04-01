@@ -23,16 +23,18 @@ function shuffle(array) {
   return array;
 }
 
-export default function HorizontalCardsContainer({ navigation, route, foodCategory }) {
+export default function HorizontalCardsContainer({ navigation, route, foodCategory, yeni }) {
 
   const [foods, setFoods] = useState([]);
+  const [foodsYeni, setFoodsYeni] = useState([]);
   const [discover, setDiscover] = useState([]);
 
   useEffect(() => {
+    setFoodsYeni(yeni);
     discoverFoods(foodCategory.name)
       .then(data => {
         setFoods(data);
-        setDiscover((shuffle(data)).splice(0, data.length < 5 ? data.length : 5));
+        setDiscover((shuffle(data)).splice(0, data.length < 5 ? data.length : 5)); // ne dior bu aq
       })
       .catch(error => {
         alert(error)
@@ -52,15 +54,16 @@ export default function HorizontalCardsContainer({ navigation, route, foodCatego
       <View style={ styles.divider }></View>
       <FlatList
         style = { styles.cards }
-        keyExtractor={ discover.id }
-        data={ discover }
+        keyExtractor={ yeni.id }
+        data={ yeni }
         horizontal={ true }
         showsHorizontalScrollIndicator={ false }
         renderItem={({ item }) => (
           <HorizontalCard
             navigation={ navigation }
             route={ route }
-            food={ item }
+            food= { item }
+            yeni= { item }
             color={ foodCategory.color != null ? foodCategory.color : `#FEA11F` }
           />
         )}
@@ -82,10 +85,10 @@ export default function HorizontalCardsContainer({ navigation, route, foodCatego
 
 const styles = StyleSheet.create({
   cardsContainer: {
-    marginVertical: 2
+    marginVertical: 2,  
   },
   cards: {
-    paddingBottom: 4,
+    paddingBottom: 4,      
   },
   cardsLabelContainer: {
     flexDirection: 'row',
@@ -102,7 +105,7 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     marginHorizontal: 20,
-    backgroundColor: '#2221',
+    backgroundColor: "#2221",
     marginTop: 6,
     marginBottom: 4,
   },

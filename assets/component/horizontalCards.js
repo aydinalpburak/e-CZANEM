@@ -1,13 +1,19 @@
 import React from "react";
+import { useState, useEffect } from 'react';
 import { TouchableOpacity } from "react-native";
 import { Image, StyleSheet, Text, View } from "react-native";
 
-export default function HorizontalCard({ navigation, route, food, color }) {
+
+var baseUrlString = 'https://drive.google.com/uc?export=view&id='; 
+
+export default function HorizontalCard({ navigation, route, food, color, yeni }) {
+
+  //food.image = '1xtCGKsOA_DzHIuz36DQh034St6av3cUS';
   return(
     <View style={ styles.cardWrapper }>
       <TouchableOpacity activeOpacity={ 0.6 } style={ styles.cardContainer } onPress={() => navigation.push("FoodView", food)}>
         <View style={ styles.foodImageContainer }>
-          <Image source={ food.image } style={ styles.foodImage }/>
+          <Image source={{uri:baseUrlString+food.image1}} style={ styles.foodImage }/>
         </View>
         <View style={ styles.cardDeco1 }></View>
         <View
@@ -20,7 +26,7 @@ export default function HorizontalCard({ navigation, route, food, color }) {
         ></View>
         <View style={ styles.foodDetailsContainer }>
           <View style={ styles.foodDetails }>
-            <Text style={{ fontWeight: "600", fontSize: 16, color: '#222' }}>{ food.name }</Text>
+            <Text style={{ fontWeight: "600", fontSize: 16, color: '#222' }}>{food.name}</Text>
             <Text style={{ fontStyle: "italic", fontSize: 12, marginTop: -2, color: "#444" }}>{ food.tagalog }</Text>
           </View>
         </View>
@@ -41,8 +47,9 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   foodImageContainer: {
-    width: 144,
-    height: 72
+    width: 174,
+    height: 72,
+    backgroundColor: "#808080",
   },
   foodImage: {
     height: "100%",

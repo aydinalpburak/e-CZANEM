@@ -6,8 +6,11 @@ import { View } from 'react-native';
 import foodCategory from '../FoodsDB/foodCategories';
 import FavoriteButton from './favoriteButton';
 
+var baseUrlString = 'https://drive.google.com/uc?export=view&id='; 
+
 export default function FoodCard({ navigation, route, food }) {
 
+  food.image= baseUrlString + food?.image1;
   const [foodColor, setFoodColor] = useState(() => {
     let result = foodCategory.filter(({ name }) => name == food.type[0])[0];
     return result != null ? result.color != null ? result.color : `red` : `pink`;
@@ -19,7 +22,7 @@ export default function FoodCard({ navigation, route, food }) {
         navigation.push("FoodView", food);
       }}>
         <View style={ styles.cardImageContainer }>
-          <Image style={ styles.cardImage } source={ food.image }/>
+          <Image style={ styles.cardImage } source={ {uri:food.image} }/>
         </View>
         <View
           style={[

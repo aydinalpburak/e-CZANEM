@@ -20,18 +20,18 @@ export default function Favorites({ navigation, route }) {
   return(
     <View style={ globalStyles.screen }>
       <View>
-        {favorites.foods.length <= 0 ? (
+        {favorites?.foods.length <= 0 ? (
           <View style={ styles.emptyContainer }>
             <Icon
-              type="material-icons"
-              name="favorite-outline"
+              type="ionicon"
+              name="basket-outline" //todo degisecek logo
               size={ window.width/3 > 240 ? 240 : window.width/3 }
               color="#bbb"
             />
             <View style={ styles.emptyLabelContainer }>
-              <Text style={ styles.emptyLabel }>No Favorites Yet!</Text>
+              <Text style={ styles.emptyLabel }>Henuz Urun Eklenmedi</Text>
               <Text style={ styles.emptyLabelDetails }>
-                Click the heart icon in any food card or recipe and you'll see it here the next time you visit.
+                Sepetinizde urun bulunmuyor. Lutfen devam edebilmek icin birseyler ekleyin.
               </Text>
             </View>
           </View>

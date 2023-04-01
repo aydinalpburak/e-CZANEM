@@ -26,6 +26,7 @@ const SearchStack = () => (
     >
       {(props) => <Search {...props}/>}
     </Stack.Screen>
+
     <Stack.Screen
       name="FoodView"
       options={({navigation, route}) => ({
@@ -35,6 +36,7 @@ const SearchStack = () => (
     >
       {(props) => <FoodView {...props}/>}
     </Stack.Screen>
+
     <Stack.Screen
       name='FoodCategory'
       options={({ navigation, route }) => ({
@@ -44,6 +46,7 @@ const SearchStack = () => (
     >
       {(props) => <FoodCategory {...props}/>}
     </Stack.Screen>
+    
   </Stack.Navigator>
 );
 

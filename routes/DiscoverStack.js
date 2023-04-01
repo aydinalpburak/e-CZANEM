@@ -21,11 +21,13 @@ const DiscoverStack = () => (
     <Stack.Screen
       name="Discover"
       options={({ navigation, route }) => ({
-        title: "Discover",
+        title: "Urunler",
       })}
     >
       {(props) => <Discover {...props}/>}
     </Stack.Screen>
+
+
     <Stack.Screen
       name="FoodView"
       options={({navigation, route}) => ({
@@ -35,6 +37,7 @@ const DiscoverStack = () => (
     >
       {(props) => <FoodView {...props}/>}
     </Stack.Screen>
+
     <Stack.Screen
       name='FoodCategory'
       options={({ navigation, route }) => ({
@@ -44,6 +47,7 @@ const DiscoverStack = () => (
     >
       {(props) => <FoodCategory {...props}/>}
     </Stack.Screen>
+
   </Stack.Navigator>
 );
 

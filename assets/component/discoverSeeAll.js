@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   seeAllWrapper: {
   },
   seeAllContainer: {
-    backgroundColor: "red",
+    backgroundColor: "#808080",
     borderWidth: 0.5,
     borderColor: "#4441",
     borderRadius: 64,
