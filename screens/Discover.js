@@ -50,21 +50,26 @@ export default function Discover({ navigation, route }) {
   }, [navigation]);
  
   useEffect(() => {
+    var allData = [];
     const fetchPosts = async () => {
     const postsData = await getRequest('http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/getAllProducts'); // url gelecek
       if (postsData) {
         setPosts(postsData);
+        allData = postsData;
+        return allData;
       }
     };
-    fetchPosts();
-    discoverFoodCategories()
-      .then(data => {
-        setDiscoverCategories((shuffle(data)).splice(0, data.length < 8 ? data.length : 8)); //bu hala static kalmis
-      })
-      .catch(error => {
-        alert(error)
-      });
-  }, []);
+    fetchPosts()
+      .then(itemData => discoverFoodCategories(itemData)
+          .then(data => {
+            setDiscoverCategories((shuffle(data)).splice(0, data.length < 8 ? data.length : 8)); //bu halsetDiscoverCategoriesa static kalmis
+          })
+          .catch(error => {
+            alert(error)
+          })).catch(error => {
+            alert(error);
+
+  })}, []);
   
   return(
     <ScrollView style={ globalStyles.screen }>

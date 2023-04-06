@@ -80,7 +80,7 @@ const foodCategory = [
     color: '#E6CBA8',
   },
   {
-    name: 'Offal Dish',
+    name: 'Takviye Gıda',
     image: require('./images/category/offal-dish.png'),
     color: '#B73E3E',
   },
@@ -120,7 +120,7 @@ const foodCategory = [
     color: '#87A2FB',
   },
   {
-    name: 'Stew',
+    name: 'Hap',
     image: require('./images/category/stew.png'),
     color: '#A1C298',
   },

@@ -8,7 +8,6 @@ import { Text } from "react-native";
 import { View } from "react-native";
 import { Icon } from "react-native-elements";
 import FoodCard from "../assets/component/foodCard";
-import { favoriteFoods } from "../assets/controller/query";
 import window from "../assets/controller/window";
 import AppContext from "../assets/globals/appContext";
 import globalStyles from "../assets/styles/globalStyles";
@@ -29,9 +28,9 @@ export default function Favorites({ navigation, route }) {
               color="#bbb"
             />
             <View style={ styles.emptyLabelContainer }>
-              <Text style={ styles.emptyLabel }>Henuz Urun Eklenmedi</Text>
+              <Text style={ styles.emptyLabel }>Henüz Ürün Eklenmedi</Text>
               <Text style={ styles.emptyLabelDetails }>
-                Sepetinizde urun bulunmuyor. Lutfen devam edebilmek icin birseyler ekleyin.
+                Sepetinizde ürün bulunmuyor. Lütfen devam edebilmek için ürün ekleyin.
               </Text>
             </View>
           </View>

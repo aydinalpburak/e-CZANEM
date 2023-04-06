@@ -37,7 +37,7 @@ export default function BottomNavigator(){
           }}/>
         <Tab.Screen name="CategoriesStack" component={CategoriesStack}
           options={{
-            title: "Katagoriler",
+            title: "Kategoriler",
             tabBarIcon: (props) => (
               <Icon type="ionicon" name="grid-outline" color={ props.color }/>
             )

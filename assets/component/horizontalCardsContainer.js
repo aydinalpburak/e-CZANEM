@@ -31,14 +31,6 @@ export default function HorizontalCardsContainer({ navigation, route, foodCatego
 
   useEffect(() => {
     setFoodsYeni(yeni);
-    discoverFoods(foodCategory.name)
-      .then(data => {
-        setFoods(data);
-        setDiscover((shuffle(data)).splice(0, data.length < 5 ? data.length : 5)); // ne dior bu aq
-      })
-      .catch(error => {
-        alert(error)
-      });
   }, [foodCategory]);
 
   return(

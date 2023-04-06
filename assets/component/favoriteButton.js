@@ -5,7 +5,7 @@ import { TouchableOpacity } from "react-native";
 import { Icon } from "react-native-elements";
 import AppContext from "../globals/appContext";
 
-export default function FavoriteButton({ id }){
+export default function FavoriteButton({ id, pharmacyId }){
   const favorites = useContext(AppContext); // burayi arastir bakalim
 
   if((favorites?.favs.find((food) => food.id == id) ? true : false) == true){

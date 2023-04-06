@@ -9,7 +9,6 @@ import { View } from "react-native";
 import { Icon } from "react-native-elements";
 import FoodCard from "../assets/component/foodCard";
 import window from "../assets/controller/window";
-import PinoyFoods from "../assets/FoodsDB/foodsDB";
 import globalStyles from "../assets/styles/globalStyles";
 import getRequest from "../assets/component/getRequest";
 import { bool } from "prop-types";

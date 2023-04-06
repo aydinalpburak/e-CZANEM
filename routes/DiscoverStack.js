@@ -21,7 +21,7 @@ const DiscoverStack = () => (
     <Stack.Screen
       name="Discover"
       options={({ navigation, route }) => ({
-        title: "Urunler",
+        title: "Ürünler",
       })}
     >
       {(props) => <Discover {...props}/>}

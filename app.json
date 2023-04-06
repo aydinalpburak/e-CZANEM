@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "Authentic Pinoy Recipes",
+    "name": "Pharmacy Deneme",
     "slug": "authentic_pinoy_recipes",
-    "version": "1.4.2",
+    "version": "1.4.6",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/newLogoDemo.jpeg", 
+      "image": "./assets/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#FFFFFF"
     },
@@ -32,7 +32,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "aed24187-3655-492c-8f31-8cb33e7cc574"
+        "projectId": "b7892d3f-cd25-487f-846e-8bab7901e3ad"
       }
     }
   }

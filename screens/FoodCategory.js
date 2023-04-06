@@ -4,7 +4,6 @@ import { useState } from "react";
 import { FlatList } from "react-native";
 import { View } from "react-native";
 import FoodCard from "../assets/component/foodCard";
-import categoryFoods from "../assets/controller/query";
 import window from "../assets/controller/window";
 import globalStyles from "../assets/styles/globalStyles";
 
@@ -27,13 +26,7 @@ export default function FoodCategory({ navigation, route }){
   }, [navigation, category]);
 
   useEffect(() => {
-    categoryFoods(category)
-      .then(data => {
-        setFoods(data);
-      })
-      .catch(error => {
-        alert(error)
-      });
+    //useEffect
   }, [category]);
 
   foods.sort(function(a, b) {

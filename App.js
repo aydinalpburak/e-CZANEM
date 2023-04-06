@@ -2,7 +2,6 @@ import React from 'react';
 import BottomNavigator from './routes/bottomNavigation';
 import AppContext from './assets/globals/appContext';
 import { useState } from 'react';
-import { favoriteFoods } from './assets/controller/query';
 import { useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import HelloWorldApp from './screens/anasayfa';

@@ -40,7 +40,7 @@ export default function FoodRecipe({ recipe }) {
  
       <View style={ styles.divider }></View>
       <View style={ styles.instructionsContainer }>
-        <Text style={ styles.instructionsLabel }>Instructions</Text>
+        <Text style={ styles.instructionsLabel }>Kullanım Bilgisi</Text>
         <FlatList
           contentContainerStyle={{ flexGrow: 1 }}
           horizontal={ true }
@@ -68,7 +68,7 @@ export default function FoodRecipe({ recipe }) {
           renderItem={({ item, index }) => (
             <View style={ styles.instructionWrapper }>
               <View style={ styles.instructionContainer }>
-                <Text style={ styles.instructionNumberContainer }>Step { index + 1 }</Text>
+                <Text style={ styles.instructionNumberContainer }>Adım { index + 1 }</Text>
                 <View style={ styles.instruction }>
                   <Text style={ styles.instructionText }>{ item }</Text>
                 </View>

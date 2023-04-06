@@ -24,7 +24,7 @@ const CategoriesStack = () => (
     <Stack.Screen
       name="Categories"
       options={({ navigation, route }) => ({
-        title: "Categories",
+        title: "Kategoriler",
       })}
     >
       {(props) => <Categories {...props}/>}

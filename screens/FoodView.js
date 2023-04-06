@@ -1,18 +1,19 @@
 import React from "react";
 import { useState } from "react";
-import { Linking, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { Image } from "react-native";
 import { Text } from "react-native";
 import { View } from "react-native";
+import { useContext } from "react";
 import globalStyles from "../assets/styles/globalStyles";
 import window from "../assets/controller/window";
 import { ScrollView } from "react-native";
 import FoodViewType from "../assets/component/foodViewType";
-import { Icon } from "react-native-elements";
 import FoodRecipe from "../assets/component/foodRecipe";
 import FavoriteButton from "../assets/component/favoriteButton";
 import FoodInformation from "../assets/component/foodInformation";
-import { useEffect } from "react";
+import AppContext from "../assets/globals/appContext";
+import ComboBoxExample from "../assets/component/ComboBox";
 
 function compareStrings(a, b) {
   a = a.toLowerCase();
@@ -25,7 +26,8 @@ var baseUrlString = 'https://drive.google.com/uc?export=view&id=';
 export default function FoodView({ navigation, route }) {
   const [food, setFood] = useState(route.params);
   const [foodType, setFoodType] = useState(food.type);
-
+  const [selectedLanguage, setSelectedLanguage] = useState(-1);
+  const favorites = useContext(AppContext);
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: food.name,
@@ -40,8 +42,13 @@ export default function FoodView({ navigation, route }) {
     <ScrollView style={ globalStyles.screen }>
       <View>
         <Image source={{uri: baseUrlString + food.image1}} style={ styles.image } />
-        <View style={ styles.favoriteButtonContainer }>
-          <FavoriteButton id={ food.id }/>
+        {(selectedLanguage != -1) || (favorites?.favs.find((item) => item.id == food.id)) ? (
+          <View style={ styles.favoriteButtonContainer }>
+          <FavoriteButton id={ food.id } pharmacyId={selectedLanguage}/>
+          </View>
+        ) : (null)}        
+        <View style={ styles.comboBoxContainer }>
+            <ComboBoxExample deneme={setSelectedLanguage} foodId={(food.id).toString()}></ComboBoxExample>
         </View>
       </View>
       <View style={ styles.articleContainer }>
@@ -107,9 +114,18 @@ const styles = StyleSheet.create({
     padding: 6,
     elevation: 16,
     right: 12,
-    bottom: 44,
+    bottom: 105,
     borderRadius: 100,
     aspectRatio: 1,
+  },
+  comboBoxContainer: {
+    width:230,
+    position: 'absolute',
+    backgroundColor: 'white',
+    borderRadius: 100,
+    right: 12,
+    bottom: 44,
+    elevation: 16,
   },
   articleContainer: {
     marginTop: -64,
