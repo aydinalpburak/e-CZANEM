@@ -54,7 +54,7 @@ export default function FoodCategory({ navigation, route }){
             ></View>
           )}
           renderItem={({ item }) => (
-            <FoodCard navigation={ navigation } route={ route } food={ item }/>
+            <FoodCard navigation={ navigation } route={ route } food={ item } isSearch={false}/>
           )}
         />
       </View>

@@ -5,16 +5,39 @@ import { Text } from 'react-native';
 import { View } from 'react-native';
 import foodCategory from '../FoodsDB/foodCategories';
 import FavoriteButton from './favoriteButton';
+import { Ionicons } from '@expo/vector-icons';
+import '../globals/priceBasket';
+
 
 var baseUrlString = 'https://drive.google.com/uc?export=view&id='; 
 
-export default function FoodCard({ navigation, route, food }) {
+export default function FoodCard({ navigation, route, food, isSearch, setTotalPrice }) {
 
   food.image= baseUrlString + food?.image1;
   const [foodColor, setFoodColor] = useState(() => {
     let result = foodCategory.filter(({ name }) => name == food.type[0])[0];
     return result != null ? result.color != null ? result.color : `red` : `pink`;
   });
+
+  const [count, setCount] = useState(1);
+
+  const decrementCount = () => {
+    const newCount = count > 1 ? count - 1 : 1;
+    setCount(newCount);
+    global.priceALL = global.priceALL - 10;
+    setTotalPrice(global.priceALL);
+    //console.log(global.priceALL);
+    //onQuantityChange(newCount);
+  };
+
+  const incrementCount = () => {
+    const newCount = count + 1;
+    setCount(newCount);
+    global.priceALL = global.priceALL + 10;
+    setTotalPrice(global.priceALL);
+    //console.log(global.priceALL);
+    //onQuantityChange(newCount);
+  };
 
   return(
     <View style={ styles.cardWrapper }>
@@ -44,10 +67,20 @@ export default function FoodCard({ navigation, route, food }) {
             ) : (
               null
             )}
+            {isSearch ? (null):(
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft:20}}>
+                <TouchableOpacity onPress={decrementCount}>
+                  <Ionicons name="remove-circle-outline" size={24} color="black" />
+                </TouchableOpacity>
+                <Text style={{ marginHorizontal: 10, fontSize: 16 }}>{count}</Text>
+                <TouchableOpacity onPress={incrementCount}>
+                  <Ionicons name="add-circle-outline" size={24} color="black" />
+                </TouchableOpacity>
+                </View>
+            )}
+
           </View>
-        </View>
-        <View style={ styles.favButtonContainer }>
-          <FavoriteButton id={ food.id }/>
+          <Text style={ [styles.foodTypeLabel, {marginTop:5}] }>$3.45</Text>
         </View>
       </TouchableOpacity>
     </View>

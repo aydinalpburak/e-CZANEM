@@ -2,18 +2,118 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import DiscoverStack from "./DiscoverStack";
+import { useState, useEffect } from "react";
+import AppContext from "../assets/globals/appContext";
 import CategoriesStack from "./CategoriesStack";
 import SearchStack from "./SearchStack";
 import FavoritesStack from "./FavoritesStack";
 import SettingsStack from "./SettingsStack";
 import MapStack from "./MapStack";
 import { Icon } from "react-native-elements";
+import getRequest from "../assets/component/getRequest";
+import { postRequest } from "../assets/component/postRequest";
 
 const Tab = createBottomTabNavigator();
 
-export default function BottomNavigator(){
-  return(
-    <NavigationContainer>
+export default function BottomNavigator({ route }) {
+  const [favs, setFavs] = useState();
+  const [foods, setFoods] = useState();
+  console.log(`Kullanici adi: ${route.params["param1"]}`);
+  const getData = async () => {
+    try {
+      const value = await getRequest(
+        "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/getFavoritesProducts?id=123"
+      );
+      // console.log(value);
+      return value != null ? value : [];
+    } catch (e) {
+      alert(e);
+    }
+  };
+
+  const saveData = async (foodIds) => {
+    try {
+      const value = JSON.stringify(foodIds);
+      await AsyncStorage.setItem("favorites", value);
+    } catch (e) {
+      alert(e);
+    }
+  };
+
+  useEffect(() => {
+    getData()
+      .then((data) => {
+        setFavs(data != null ? data : []);
+        setFoods(data != null ? data : []);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }, []);
+
+  const addFavorites = (id) => {
+    try {
+      const value = postRequest(
+        "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/addNewFavoriteProduct",
+        123,
+        id
+      );
+    } catch (e) {
+      alert(e);
+    }
+
+    getData()
+      .then((data) => {
+        setFavs(data != null ? data : []);
+        setFoods(data != null ? data : []);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+
+  const clearFavorites = () => {
+    getData()
+      .then((data) => {
+        setFavs(data != null ? data : []);
+        setFoods(data != null ? data : []);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+
+  const deleteFavorites = (id) => {
+    try {
+      const value = postRequest(
+        "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/deleteFavoriteProduct",
+        123,
+        id
+      );
+    } catch (e) {
+      alert(e);
+    }
+
+    getData()
+      .then((data) => {
+        setFavs(data != null ? data : []);
+        setFoods(data != null ? data : []);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+
+  const favorites = {
+    favs: favs,
+    foods: foods,
+    addFavorites,
+    clearFavorites,
+    deleteFavorites,
+  };
+
+  return (
+    <AppContext.Provider value={favorites}>
       <Tab.Navigator
         initialRouteName="DiscoverStack"
         screenOptions={{
@@ -24,53 +124,71 @@ export default function BottomNavigator(){
             height: 70,
           },
           tabBarItemStyle: {
-            paddingVertical: 12
+            paddingVertical: 12,
           },
         }}
       >
-        <Tab.Screen name="DiscoverStack" component={ DiscoverStack }
+        <Tab.Screen
+          name="DiscoverStack"
+          component={DiscoverStack}
           options={{
             title: "Ürünler",
             tabBarIcon: (props) => (
-              <Icon type="ionicon" name="bandage-outline" color={ props.color }/>
-            )
-          }}/>
-        <Tab.Screen name="CategoriesStack" component={CategoriesStack}
+              <Icon type="ionicon" name="bandage-outline" color={props.color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="CategoriesStack"
+          component={CategoriesStack}
           options={{
             title: "Kategoriler",
             tabBarIcon: (props) => (
-              <Icon type="ionicon" name="grid-outline" color={ props.color }/>
-            )
-          }}/>
-        <Tab.Screen name="SearchStack" component={SearchStack}
+              <Icon type="ionicon" name="grid-outline" color={props.color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="SearchStack"
+          component={SearchStack}
           options={{
             title: "Arama",
             tabBarIcon: (props) => (
-              <Icon type="material-icons" name="search" color={ props.color }/>
-            )
-          }}/>
-        <Tab.Screen name="FavoritesStack" component={FavoritesStack}
+              <Icon type="material-icons" name="search" color={props.color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="FavoritesStack"
+          component={FavoritesStack}
           options={{
             title: "Sepet",
             tabBarIcon: (props) => (
-              <Icon type="ionicon" name="basket-outline" color={ props.color }/>
-            )
-          }}/>
-        <Tab.Screen name="MapStack" component={MapStack}
+              <Icon type="ionicon" name="basket-outline" color={props.color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="MapStack"
+          component={MapStack}
           options={{
             title: "Harita",
             tabBarIcon: (props) => (
-              <Icon type="material-icons" name="map" color={ props.color }/>
-            )
-        }}/>
-        <Tab.Screen name="SettingsStack" component={SettingsStack}
+              <Icon type="material-icons" name="map" color={props.color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="SettingsStack"
+          component={SettingsStack}
           options={{
             title: "Ayarlar",
             tabBarIcon: (props) => (
-              <Icon type="material-icons" name="settings" color={ props.color }/>
-            )
-          }}/>          
+              <Icon type="material-icons" name="settings" color={props.color} />
+            ),
+          }}
+        />
       </Tab.Navigator>
-    </NavigationContainer>
+    </AppContext.Provider>
   );
 }

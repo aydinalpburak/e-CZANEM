@@ -76,7 +76,7 @@ export default function Discover({ navigation, route }) {
       <View style = { styles.horizontalCardsContainer }>
         { discoverCategories.map((category, index) => {
           return(
-            <HorizontalCardsContainer key={ index } navigation={ navigation } route={ route } foodCategory={ category } yeni={posts} />
+            <HorizontalCardsContainer key={ index } navigation={ navigation } route={ route } foodCategory={ category } medicineFromDB={posts} />
           )
         })}
       </View>

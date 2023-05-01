@@ -2,7 +2,7 @@ import React from "react";
 import { useContext } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { FlatList } from "react-native";
+import { FlatList, TouchableOpacity } from "react-native";
 import { StyleSheet } from "react-native";
 import { Text } from "react-native";
 import { View } from "react-native";
@@ -13,31 +13,46 @@ import AppContext from "../assets/globals/appContext";
 import globalStyles from "../assets/styles/globalStyles";
 
 export default function Favorites({ navigation, route }) {
-
   const favorites = useContext(AppContext);
+  const [totalPrice, setTotalPrice] = useState(global.priceALL);
 
-  return(
-    <View style={ globalStyles.screen }>
+  useEffect(() => {
+    setTotalPrice(global.priceALL); //favorilerin toplami kadar...
+  }, [global.priceALL]);
+
+  function getTotalPrice(foods) {
+    let totalPrice = 0;
+
+    for (let i = 0; i < foods.length; i++) {
+      totalPrice += foods[i].price;
+    }
+
+    return totalPrice;
+  }
+
+  return (
+    <View style={globalStyles.screen}>
       <View>
         {favorites?.foods.length <= 0 ? (
-          <View style={ styles.emptyContainer }>
+          <View style={styles.emptyContainer}>
             <Icon
               type="ionicon"
               name="basket-outline" //todo degisecek logo
-              size={ window.width/3 > 240 ? 240 : window.width/3 }
+              size={window.width / 3 > 240 ? 240 : window.width / 3}
               color="#bbb"
             />
-            <View style={ styles.emptyLabelContainer }>
-              <Text style={ styles.emptyLabel }>Henüz Ürün Eklenmedi</Text>
-              <Text style={ styles.emptyLabelDetails }>
-                Sepetinizde ürün bulunmuyor. Lütfen devam edebilmek için ürün ekleyin.
+            <View style={styles.emptyLabelContainer}>
+              <Text style={styles.emptyLabel}>Henüz Ürün Eklenmedi</Text>
+              <Text style={styles.emptyLabelDetails}>
+                Sepetinizde ürün bulunmuyor. Lütfen devam edebilmek için ürün
+                ekleyin.
               </Text>
             </View>
           </View>
         ) : (
           <FlatList
-            showsVerticalScrollIndicator={ false }
-            data={ favorites.foods  }
+            showsVerticalScrollIndicator={false}
+            data={favorites.foods}
             ListHeaderComponent={() => (
               <View
                 style={{
@@ -53,11 +68,25 @@ export default function Favorites({ navigation, route }) {
               ></View>
             )}
             renderItem={({ item }) => (
-              <FoodCard navigation={ navigation } route={ route } food={ item }/>
+              <FoodCard
+                navigation={navigation}
+                route={route}
+                food={item}
+                isSearch={false}
+                setTotalPrice={setTotalPrice}
+              />
             )}
           />
         )}
       </View>
+      <TouchableOpacity style={styles.card} onPress={() => {console.log("Butona Basildi")}}> 
+          <Text style={{ fontWeight: "bold", color: "white" }}>
+            Toplam Fiyat:
+          </Text>
+          <Text style={{ fontWeight: "bold", color: "black", marginLeft: 5 }}>
+            {totalPrice}
+          </Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -65,28 +94,48 @@ export default function Favorites({ navigation, route }) {
 const styles = StyleSheet.create({
   emptyContainer: {
     padding: 32,
-    height: window.height/3 + 16,
+    height: window.height / 3 + 16,
     maxHeight: 480,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
   },
   emptyLabelContainer: {
     marginVertical: 4,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   emptyLabel: {
-    fontSize: window.width/20 > 32 ? 32 : window.width/20,
-    fontWeight: 'bold',
-    color: '#888'
+    fontSize: window.width / 20 > 32 ? 32 : window.width / 20,
+    fontWeight: "bold",
+    color: "#888",
   },
   emptyLabelDetails: {
-    textAlign: 'center',
+    textAlign: "center",
     marginVertical: 8,
-    color: '#aaa',
-    fontSize: window.width/32 > 24 ? 24 : window.width/32,
-    width: window.width/1.5,
+    color: "#aaa",
+    fontSize: window.width / 32 > 24 ? 24 : window.width / 32,
+    width: window.width / 1.5,
     maxWidth: 480,
-  }
+  },
+  card: {
+    backgroundColor: "#197A6C",
+    borderRadius: 10,
+    padding: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
+    position: "absolute",
+    bottom: 5,
+    left: 0,
+    right: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+  },
 });

@@ -138,7 +138,7 @@ export default function Search({ navigation, route }) {
           ></View>
         )}
         renderItem={({ item }) => (        
-          <FoodCard food={ item } navigation={ navigation } route={ route }/> //todo
+          <FoodCard food={ item } navigation={ navigation } route={ route } isSearch={true}/> //todo
         )}
       />      
       ) : (

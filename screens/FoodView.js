@@ -26,7 +26,7 @@ var baseUrlString = 'https://drive.google.com/uc?export=view&id=';
 export default function FoodView({ navigation, route }) {
   const [food, setFood] = useState(route.params);
   const [foodType, setFoodType] = useState(food.type);
-  const [selectedLanguage, setSelectedLanguage] = useState(-1);
+  const [selectedPharmacy, setSelectedPharmacy] = useState(-1);
   const favorites = useContext(AppContext);
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -42,13 +42,13 @@ export default function FoodView({ navigation, route }) {
     <ScrollView style={ globalStyles.screen }>
       <View>
         <Image source={{uri: baseUrlString + food.image1}} style={ styles.image } />
-        {(selectedLanguage != -1) || (favorites?.favs.find((item) => item.id == food.id)) ? (
+        {(selectedPharmacy != -1) || (favorites?.favs.find((item) => item.id == food.id)) ? ( //todoB burasi onemli
           <View style={ styles.favoriteButtonContainer }>
-          <FavoriteButton id={ food.id } pharmacyId={selectedLanguage}/>
+          <FavoriteButton id={ food.id } pharmacyId={selectedPharmacy}/>
           </View>
         ) : (null)}        
         <View style={ styles.comboBoxContainer }>
-            <ComboBoxExample deneme={setSelectedLanguage} foodId={(food.id).toString()}></ComboBoxExample>
+            <ComboBoxExample setSelected={setSelectedPharmacy} foodId={(food.id).toString()}></ComboBoxExample>
         </View>
       </View>
       <View style={ styles.articleContainer }>
@@ -57,6 +57,7 @@ export default function FoodView({ navigation, route }) {
             <View style={ styles.foodNameContainer }>
               <Text style={ styles.foodName }>{ food.name }</Text>
               <Text style={ styles.foodTagalog }>({ food.tagalog })</Text>
+              <Text style={ [styles.foodTagalog, {marginTop: 5}] }>$3.45</Text>
             </View>
           </View>
           <View style={ styles.divider }></View>

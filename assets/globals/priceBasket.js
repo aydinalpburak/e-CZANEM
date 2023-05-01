@@ -1,0 +1,1 @@
+global.priceALL = 0;

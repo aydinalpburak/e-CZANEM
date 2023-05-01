@@ -9,89 +9,97 @@ import DiscoverSeeAll from "./discoverSeeAll";
 import HorizontalCard from "./horizontalCards";
 
 function shuffle(array) {
-  let currentIndex = array.length,  randomIndex;
+  let currentIndex = array.length,
+    randomIndex;
 
   while (currentIndex != 0) {
-
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
 
     [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex], array[currentIndex]];
+      array[randomIndex],
+      array[currentIndex],
+    ];
   }
 
   return array;
 }
 
-export default function HorizontalCardsContainer({ navigation, route, foodCategory, yeni }) {
-
-  const [foods, setFoods] = useState([]);
-  const [foodsYeni, setFoodsYeni] = useState([]);
-  const [discover, setDiscover] = useState([]);
+export default function HorizontalCardsContainer({
+  navigation,
+  route,
+  foodCategory,
+  medicineFromDB,
+}) {
+  const [dataForFlatlist, setDataForFlatlist] = useState([]); //burasi kaldirilmasi gerekebilir.
 
   useEffect(() => {
-    setFoodsYeni(yeni);
+    setDataForFlatlist(
+      medicineFromDB.filter((item) => item.type.includes(foodCategory.name))
+    );
   }, [foodCategory]);
 
-  return(
-    <View style = { styles.cardsContainer }>
-      <View style={ styles.cardsLabelContainer }>
-        <Text style = { styles.foodCategoryName }>{ (foodCategory.name).toUpperCase() }</Text>
-        {discover.length >= 5 ? (
-          <DiscoverSeeAll navigation={ navigation } route={ route } foodType={ foodCategory.name }/>
-        ) : (
-          null
-        )}
+  // return items.filter(item => item.type.includes(foodCategory)); //
+
+  return (
+    <View style={styles.cardsContainer}>
+      <View style={styles.cardsLabelContainer}>
+        <Text style={styles.foodCategoryName}>
+          {foodCategory.name.toUpperCase()}
+        </Text>
       </View>
-      <View style={ styles.divider }></View>
-      <FlatList
-        style = { styles.cards }
-        keyExtractor={ yeni.id }
-        data={ yeni }
-        horizontal={ true }
-        showsHorizontalScrollIndicator={ false }
+      <View style={styles.divider}></View>
+      <FlatList //todo buralarda categori bazli sinirlama yapilmasi gerekiyor
+        style={styles.cards}
+        keyExtractor={dataForFlatlist.id}
+        data={dataForFlatlist}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (
           <HorizontalCard
-            navigation={ navigation }
-            route={ route }
-            food= { item }
-            yeni= { item }
-            color={ foodCategory.color != null ? foodCategory.color : `#FEA11F` }
+            navigation={navigation}
+            route={route}
+            food={item}
+            color={foodCategory.color != null ? foodCategory.color : `#FEA11F`}
           />
         )}
         ListHeaderComponent={
-          <View style={{
-            width: 12,
-          }}></View>
+          <View
+            style={{
+              width: 12,
+            }}
+          ></View>
         }
         ListFooterComponent={
-          <View style={{
-            width: 12,
-          }}></View>
+          <View
+            style={{
+              width: 12,
+            }}
+          ></View>
         }
       />
-      <View style={ styles.divider }></View>
+      <View style={styles.divider}></View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   cardsContainer: {
-    marginVertical: 2,  
+    marginVertical: 2,
   },
   cards: {
-    paddingBottom: 4,      
+    paddingBottom: 4,
   },
   cardsLabelContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     marginHorizontal: 20,
   },
   foodCategoryName: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 16,
-    color: '#222',
+    color: "#222",
     flex: 1,
   },
   divider: {
