@@ -2,6 +2,7 @@ import React from "react";
 import LoginMainScreen from "./loginProject/loginMainScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import AddressForm from "./screens/AdressForm";
+import BottomNavigator from "./routes/bottomNavigation";
 
 //-------Login Icin Gerekli Olanlar----------------
 
@@ -12,9 +13,9 @@ export default function App() {
   //</AppContext.Provider>
   return (
     //<HelloWorldApp></HelloWorldApp>
-    // <NavigationContainer>
-    //   <LoginMainScreen />
-    // </NavigationContainer>
-    <AddressForm></AddressForm>
+    <NavigationContainer>
+      <BottomNavigator />
+    </NavigationContainer>
+    //<AddressForm></AddressForm>
   );
 }

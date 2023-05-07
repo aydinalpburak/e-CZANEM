@@ -4,18 +4,20 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   Dimensions,
   TouchableOpacity,
-  Alert,
+  ScrollView,
 } from "react-native";
 import Logo2PNG from "../assets/component/LogoPNG";
 import CustomButton from "../assets/component/CustomButton";
 import * as Location from "expo-location";
 import Background from "../src/components/Background";
 import Popup from "../assets/component/Popup";
+import { Row } from "native-base";
 
-export default function AddressForm() {
+const { height } = Dimensions.get('window');
+
+export default function AddressForm({ navigation, route }) {
   const [neighborhood, setNeighborhood] = useState("");
   const [street, setStreet] = useState("");
   const [buildingNumber, setBuildingNumber] = useState("");
@@ -78,80 +80,86 @@ export default function AddressForm() {
       setAddress(reverseGeocodedAddress);
     };
     await reverseGeocode();
-    !stringAdress(address[0]);
+    // await new Promise(resolve => setTimeout(resolve, 4000)); //4 saniye beklet
+    stringAdress(address[0]);
   };
 
   return (
-    <Background>
-      <Popup
-        isVisible={isVisible}
-        onClose={closePopup}
-        infoMessage={errorMessage}
-      />
-      <Logo2PNG />
-      <Text style={styles.heading}>Adres Bilgilerini Giriniz</Text>
-      <CustomButton
-        title={"Adres Bilgimi Getir"}
-        onPress={userLocation}
-      ></CustomButton>
-      <TextInput
-        style={styles.input}
-        placeholder="Şehir"
-        value={city}
-        onChangeText={setCity}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="İlçe"
-        value={district}
-        onChangeText={setDistrict}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Mahalle"
-        value={neighborhood}
-        onChangeText={setNeighborhood}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Cadde"
-        value={street}
-        onChangeText={setStreet}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Bina Numarası"
-        value={buildingNumber}
-        onChangeText={setBuildingNumber}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Kat Numarası"
-        value={floorNumber}
-        onChangeText={setFloorNumber}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Kapı Numarası"
-        value={doorNumber}
-        onChangeText={setDoorNumber}
-      />
+    <ScrollView style={styles.containerDeneme}>
+      <View style={{ height:(height-120), flex:1 }}>
+        <Background>
+          <Popup
+            isVisible={isVisible}
+            onClose={closePopup}
+            infoMessage={errorMessage}
+          />
 
-      <TouchableOpacity style={styles.card} onPress={handleSubmit}>
-        <Text style={{ fontWeight: "bold", color: "white" }}>
-          Ödeme Ekranına Geç
-        </Text>
-      </TouchableOpacity>
-    </Background>
+          <View style={{ flexDirection: "row", marginBottom: 20, marginTop:-50 }}>
+            <Logo2PNG />
+            <View style={{ flexDirection: "column" }}>
+              <Text style={styles.heading}>Adres Bilgilerini Giriniz</Text>
+              <CustomButton
+                title={"Adres Bilgimi Getir"}
+                onPress={userLocation}
+              ></CustomButton>
+            </View>
+          </View>
+
+          <TextInput
+            style={styles.input}
+            placeholder="Şehir"
+            value={city}
+            onChangeText={setCity}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="İlçe"
+            value={district}
+            onChangeText={setDistrict}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Mahalle"
+            value={neighborhood}
+            onChangeText={setNeighborhood}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Cadde"
+            value={street}
+            onChangeText={setStreet}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Bina Numarası"
+            value={buildingNumber}
+            onChangeText={setBuildingNumber}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Kat Numarası"
+            value={floorNumber}
+            onChangeText={setFloorNumber}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Kapı Numarası"
+            value={doorNumber}
+            onChangeText={setDoorNumber}
+          />
+
+          <TouchableOpacity style={styles.card} onPress={handleSubmit}>
+            <Text style={{ fontWeight: "bold", color: "white" }}>
+              Ödeme Ekranına Geç
+            </Text>
+          </TouchableOpacity>
+        </Background>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container_button: {
-    position: "absolute",
-    bottom: 0,
-    alignItems: "center",
-  },
   container: {
     flex: 1,
     justifyContent: "center",
@@ -159,10 +167,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#F5F5F5",
   },
   heading: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "bold",
     color: "#197A6C",
-    marginBottom: 20,
+    marginBottom: 10,
+    marginLeft: 10,
   },
   input: {
     height: 40,
@@ -199,5 +208,8 @@ const styles = StyleSheet.create({
     right: 0,
     justifyContent: "center",
     alignItems: "center",
+  },
+  containerDeneme: {
+    flex: 1,
   },
 });

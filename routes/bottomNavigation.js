@@ -18,7 +18,7 @@ const Tab = createBottomTabNavigator();
 export default function BottomNavigator({ route }) {
   const [favs, setFavs] = useState();
   const [foods, setFoods] = useState();
-  console.log(`Kullanici adi: ${route.params["param1"]}`);
+  //console.log(`Kullanici adi: ${route.params["param1"]}`); //giris sayfasindan gelen veriler buraya aktarilacak
   const getData = async () => {
     try {
       const value = await getRequest(

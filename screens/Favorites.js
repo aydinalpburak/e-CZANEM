@@ -14,20 +14,62 @@ import globalStyles from "../assets/styles/globalStyles";
 
 export default function Favorites({ navigation, route }) {
   const favorites = useContext(AppContext);
-  const [totalPrice, setTotalPrice] = useState(global.priceALL);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
-    setTotalPrice(global.priceALL); //favorilerin toplami kadar...
-  }, [global.priceALL]);
+    get2globalArray(favorites.foods);
+    //getTotalPrice(favorites.foods); //favorilerin toplami kadar olmasi kadar...
+  }, [favorites.foods]);
 
-  function getTotalPrice(foods) {
-    let totalPrice = 0;
+  useEffect(() => {
+    setTotalPrice(getTotalPrice);
+  },[]);
 
-    for (let i = 0; i < foods.length; i++) {
-      totalPrice += foods[i].price;
+ 
+
+  function get2globalArray(favorites) {
+    // console.log(`Tetiklendi`);
+    // global.items.forEach((element) => {
+    //   console.log(`GUNCEL DURUM ${element.id} ${element.count} ${element.price}`);
+    // });
+    console.log(`---------------------------------------------------`);
+    for (let i = 0; i < favorites.length; i++) {
+      let newProduct = {
+        id: favorites[i].id,
+        price: favorites[i].price,
+        count: 1,
+      };
+      let isFound = false;
+      global.items.forEach((element) => {
+        if (element.id == newProduct.id) {
+          isFound = true;
+        }
+      });
+      if (!isFound) {
+        global.items.push(newProduct);
+        console.log(
+          `Eklendi ${newProduct.id} ${newProduct.count} ${newProduct.price}`
+        );
+      }
     }
+    compareArraysAndDelete(favorites,global.items);
+  }
 
-    return totalPrice;
+  function compareArraysAndDelete(arr1, arr2) {
+    arr2.forEach((item, i) => {
+      if (!arr1.some((el) => el.id === item.id)) {
+        console.log(`Silindi ${item.id} ${item.price} ${item.count}`);
+        arr2.splice(i, 1);
+      }
+    });
+  }
+  
+  function getTotalPrice() {
+    var result = 0;
+    global.items.forEach(element => {
+      result = result + (parseFloat(element.price) * element.count);
+    });
+    return result;
   }
 
   return (
@@ -79,13 +121,19 @@ export default function Favorites({ navigation, route }) {
           />
         )}
       </View>
-      <TouchableOpacity style={styles.card} onPress={() => {console.log("Butona Basildi")}}> 
-          <Text style={{ fontWeight: "bold", color: "white" }}>
-            Toplam Fiyat:
-          </Text>
-          <Text style={{ fontWeight: "bold", color: "black", marginLeft: 5 }}>
-            {totalPrice}
-          </Text>
+      <TouchableOpacity
+        style={styles.card}
+        onPress={() => {
+          console.log("Butona Basildi");
+          navigation.push("AdressForm");
+        }}
+      >
+        <Text style={{ fontWeight: "bold", color: "white" }}>
+          Toplam Fiyat:
+        </Text>
+        <Text style={{ fontWeight: "bold", color: "black", marginLeft: 5 }}>
+          {(Math.round(totalPrice * 100) / 100).toFixed(2)}
+        </Text>
       </TouchableOpacity>
     </View>
   );

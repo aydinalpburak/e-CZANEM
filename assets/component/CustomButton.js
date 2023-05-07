@@ -17,6 +17,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#2980b9",
     marginBottom: 10,
+    marginLeft:20,
+    marginRight: 20
   },
   title: {
     color: "white",

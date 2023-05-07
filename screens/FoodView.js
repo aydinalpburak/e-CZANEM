@@ -57,7 +57,7 @@ export default function FoodView({ navigation, route }) {
             <View style={ styles.foodNameContainer }>
               <Text style={ styles.foodName }>{ food.name }</Text>
               <Text style={ styles.foodTagalog }>({ food.tagalog })</Text>
-              <Text style={ [styles.foodTagalog, {marginTop: 5}] }>$3.45</Text>
+              <Text style={ [styles.foodTagalog, {marginTop: 5}] }>{`${food.price} TL`}</Text>
             </View>
           </View>
           <View style={ styles.divider }></View>

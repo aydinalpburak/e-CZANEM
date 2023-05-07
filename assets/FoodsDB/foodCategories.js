@@ -11,12 +11,12 @@ const foodCategory = [
   // },
   {
     name: 'Takviye Gıda',
-    image: require('./images/category/offal-dish.png'),
+    image: require('./images/category/tgida.jpg'),
     color: '#B73E3E',
   },
   {
     name: 'Hap',
-    image: require('./images/category/stew.png'),
+    image: require('./images/category/hap.jpg'),
     color: '#A1C298',
   },
 ];

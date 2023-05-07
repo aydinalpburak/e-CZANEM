@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Favorites from "../screens/Favorites";
 import FoodView from "../screens/FoodView";
 import FoodCategory from "../screens/FoodCategory";
+import AdressForm from "../screens/AdressForm";
 
 const Stack = createNativeStackNavigator();
 
@@ -34,6 +35,15 @@ const FavoritesStack = () => (
       })}
     >
       {(props) => <FoodView {...props}/>}
+    </Stack.Screen>
+    <Stack.Screen
+      name="AdressForm"
+      options={({navigation, route}) => ({
+        title: "Adres Bilgileri",
+        animation: "slide_from_bottom",
+      })}
+    >
+      {(props) => <AdressForm {...props}/>}
     </Stack.Screen>
     <Stack.Screen
       name='FoodCategory'
