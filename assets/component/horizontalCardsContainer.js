@@ -31,11 +31,11 @@ export default function HorizontalCardsContainer({
   foodCategory,
   medicineFromDB,
 }) {
-  const [dataForFlatlist, setDataForFlatlist] = useState([]); //burasi kaldirilmasi gerekebilir.
+  const [dataForFlatlist, setDataForFlatlist] = useState([]);
 
   useEffect(() => {
     setDataForFlatlist(
-      medicineFromDB.filter((item) => item.type.includes(foodCategory.name))
+      medicineFromDB.filter((item) => item.type.includes(foodCategory.name)) //todo ise yarar
     );
   }, [foodCategory]);
 

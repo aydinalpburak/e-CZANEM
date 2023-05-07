@@ -4,8 +4,8 @@ import { useState } from "react";
 import { FlatList } from "react-native";
 import { View } from "react-native";
 import FoodCard from "../assets/component/foodCard";
-import window from "../assets/controller/window";
 import globalStyles from "../assets/styles/globalStyles";
+import getRequest from "../assets/component/getRequest";
 
 function compareStrings(a, b) {
   a = a.toLowerCase();
@@ -16,8 +16,8 @@ function compareStrings(a, b) {
 
 export default function FoodCategory({ navigation, route }){
   const [category, setCategory] = useState(route.params);
-  const [foods, setFoods] = useState([]);
-  
+  const [dataForFlatlist, setDataForFlatlist] = useState([]);
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: category,
@@ -29,16 +29,33 @@ export default function FoodCategory({ navigation, route }){
     //useEffect
   }, [category]);
 
-  foods.sort(function(a, b) {
-    return compareStrings(a.name, b.name);
-  });
+  useEffect(() => {
+    var allData = [];
+    const fetchPosts = async () => {
+      const postsData = await getRequest(
+        "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/getAllProducts"
+      ); // url gelecek
+      if (postsData) {
+        setDataForFlatlist(
+          postsData.filter((item) => item.type.includes(category)) //todo ise yarar
+        );
+        allData = postsData;
+        return allData;
+      }
+    };
+    fetchPosts().catch((error) => {
+      alert(error);
+    });
+  }, []);
+
+
 
   return(
     <View style={ globalStyles.screen }>
       <View>
         <FlatList
           showsVerticalScrollIndicator={ false }
-          data={ foods }
+          data={ dataForFlatlist }
           ListHeaderComponent={() => (
             <View
               style={{
@@ -54,7 +71,7 @@ export default function FoodCategory({ navigation, route }){
             ></View>
           )}
           renderItem={({ item }) => (
-            <FoodCard navigation={ navigation } route={ route } food={ item } isSearch={false}/>
+            <FoodCard navigation={ navigation } route={ route } food={ item } isSearch={true}/>
           )}
         />
       </View>

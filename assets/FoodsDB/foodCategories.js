@@ -1,14 +1,9 @@
-const foodCategory = [
+const medicineCategory = [
   {
     name: 'Default',
     image: null,
     color: '#DBD0C0',
   },
-  // {
-  //   name: 'Deep-Fried Dessert',
-  //   image: require('./images/category/deep-fried-dessert.png'),
-  //   color: null,
-  // },
   {
     name: 'Takviye Gıda',
     image: require('./images/category/tgida.jpg'),
@@ -21,4 +16,4 @@ const foodCategory = [
   },
 ];
 
-export default foodCategory;
+export default medicineCategory;

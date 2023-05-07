@@ -41,7 +41,7 @@ const CategoriesStack = () => (
     <Stack.Screen
       name="FoodView"
       options={({navigation, route}) => ({
-        title: "Food View",
+        title: "Ürünler",
         animation: "slide_from_bottom"
       })}
     >

@@ -3,14 +3,14 @@ import { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Text, View } from 'react-native';
-import foodCategory from '../FoodsDB/foodCategories';
+import medicineCategory from '../FoodsDB/foodCategories';
 
 export default function FoodViewType({ navigation, route, foodType }){
   const [category, setCategory] = useState(() => {
-    for(let i = 0; i <= foodCategory.length; i++){
-      if(i == foodCategory.length) return(foodCategory[0]);
-      if(foodCategory[i].name == foodType){
-        return(foodCategory[i]);
+    for(let i = 0; i <= medicineCategory.length; i++){
+      if(i == medicineCategory.length) return(medicineCategory[0]);
+      if(medicineCategory[i].name == foodType){
+        return(medicineCategory[i]);
       }
     }
   });

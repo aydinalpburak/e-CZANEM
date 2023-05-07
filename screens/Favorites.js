@@ -23,7 +23,7 @@ export default function Favorites({ navigation, route }) {
 
   useEffect(() => {
     setTotalPrice(getTotalPrice);
-  },[]);
+  }, []);
 
  
 
@@ -32,7 +32,7 @@ export default function Favorites({ navigation, route }) {
     // global.items.forEach((element) => {
     //   console.log(`GUNCEL DURUM ${element.id} ${element.count} ${element.price}`);
     // });
-    console.log(`---------------------------------------------------`);
+    //console.log(`---------------------------------------------------`);
     for (let i = 0; i < favorites.length; i++) {
       let newProduct = {
         id: favorites[i].id,
@@ -47,9 +47,10 @@ export default function Favorites({ navigation, route }) {
       });
       if (!isFound) {
         global.items.push(newProduct);
-        console.log(
-          `Eklendi ${newProduct.id} ${newProduct.count} ${newProduct.price}`
-        );
+        // console.log(
+        //   `Eklendi ${newProduct.id} ${newProduct.count} ${newProduct.price}`
+        // );
+        setTotalPrice(getTotalPrice);
       }
     }
     compareArraysAndDelete(favorites,global.items);
@@ -59,6 +60,7 @@ export default function Favorites({ navigation, route }) {
     arr2.forEach((item, i) => {
       if (!arr1.some((el) => el.id === item.id)) {
         console.log(`Silindi ${item.id} ${item.price} ${item.count}`);
+        setTotalPrice(getTotalPrice);
         arr2.splice(i, 1);
       }
     });
@@ -124,7 +126,7 @@ export default function Favorites({ navigation, route }) {
       <TouchableOpacity
         style={styles.card}
         onPress={() => {
-          console.log("Butona Basildi");
+          console.log("Butona Basildi - Adress Sayfasina Geciliyor");
           navigation.push("AdressForm");
         }}
       >

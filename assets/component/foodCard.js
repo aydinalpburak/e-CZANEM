@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "react-native";
 import { View } from "react-native";
-import foodCategory from "../FoodsDB/foodCategories";
+import medicineCategory from "../FoodsDB/foodCategories";
 import FavoriteButton from "./favoriteButton";
 import { Ionicons } from "@expo/vector-icons";
 import "../globals/priceBasket";
@@ -19,7 +19,7 @@ export default function FoodCard({
 }) {
   food.image = baseUrlString + food?.image1;
   const [foodColor, setFoodColor] = useState(() => {
-    let result = foodCategory.filter(({ name }) => name == food.type[0])[0];
+    let result = medicineCategory.filter(({ name }) => name == food.type[0])[0];
     return result != null
       ? result.color != null
         ? result.color
@@ -55,11 +55,11 @@ export default function FoodCard({
         break;
       }
     }
-    global.items.forEach((element) => {
-      console.log(
-        `GUNCEL DURUM ${element.id} ${element.count} ${element.price}`
-      );
-    });
+    // global.items.forEach((element) => {
+    //   console.log(
+    //     `GUNCEL DURUM ${element.id} ${element.count} ${element.price}`
+    //   );
+    // });
   }
 
   function getTotalPrice() {
