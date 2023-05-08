@@ -18,7 +18,6 @@ export default function Favorites({ navigation, route }) {
 
   useEffect(() => {
     get2globalArray(favorites.foods);
-    //getTotalPrice(favorites.foods); //favorilerin toplami kadar olmasi kadar...
   }, [favorites.foods]);
 
   useEffect(() => {

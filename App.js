@@ -3,6 +3,7 @@ import LoginMainScreen from "./loginProject/loginMainScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import AddressForm from "./screens/AdressForm";
 import BottomNavigator from "./routes/bottomNavigation";
+import OrdersScreen from "./screens/KuryeAnaEkran";
 
 //-------Login Icin Gerekli Olanlar----------------
 
@@ -14,7 +15,8 @@ export default function App() {
   return (
     //<HelloWorldApp></HelloWorldApp>
     <NavigationContainer>
-      <BottomNavigator />
+      {/* <BottomNavigator /> */}
+      <OrdersScreen></OrdersScreen>
     </NavigationContainer>
     //<AddressForm></AddressForm>
   );

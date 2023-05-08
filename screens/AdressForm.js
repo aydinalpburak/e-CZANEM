@@ -15,7 +15,7 @@ import Background from "../src/components/Background";
 import Popup from "../assets/component/Popup";
 import { Row } from "native-base";
 
-const { height } = Dimensions.get('window');
+const { height } = Dimensions.get("window");
 
 export default function AddressForm({ navigation, route }) {
   const [neighborhood, setNeighborhood] = useState("");
@@ -25,6 +25,7 @@ export default function AddressForm({ navigation, route }) {
   const [doorNumber, setDoorNumber] = useState("");
   const [city, setCity] = useState("");
   const [district, setDistrict] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [address, setAddress] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -41,6 +42,11 @@ export default function AddressForm({ navigation, route }) {
 
   const handleSubmit = () => {
     // Handle the form submission here
+    console.log("Butona Basildi - Odeme Sayfasina Geciliyor");
+    const AdressInfo ={
+      //todo adres bilgisi burada array olarak tutulacak ve gonderilecek peki ya konum lat ve long bilgileri nasil gonderilecek,
+    }
+    navigation.push("PaymentScreen",["Att1","Att2"]); //todo odeme ekranina kisinin bilgisi gonderilecek...
   };
 
   function stringAdress(item) {
@@ -86,7 +92,7 @@ export default function AddressForm({ navigation, route }) {
 
   return (
     <ScrollView style={styles.containerDeneme}>
-      <View style={{ height:(height-120), flex:1 }}>
+      <View style={{ height: height - 120, flex: 1 }}>
         <Background>
           <Popup
             isVisible={isVisible}
@@ -94,7 +100,9 @@ export default function AddressForm({ navigation, route }) {
             infoMessage={errorMessage}
           />
 
-          <View style={{ flexDirection: "row", marginBottom: 20, marginTop:-50 }}>
+          <View
+            style={{ flexDirection: "row", marginBottom: 20, marginTop: -50 }}
+          >
             <Logo2PNG />
             <View style={{ flexDirection: "column" }}>
               <Text style={styles.heading}>Adres Bilgilerini Giriniz</Text>
@@ -147,6 +155,12 @@ export default function AddressForm({ navigation, route }) {
             value={doorNumber}
             onChangeText={setDoorNumber}
           />
+          <TextInput
+            style={styles.input}
+            placeholder="Telefon Numarası"
+            value={phoneNumber}
+            onChangeText={setPhoneNumber}
+          />
 
           <TouchableOpacity style={styles.card} onPress={handleSubmit}>
             <Text style={{ fontWeight: "bold", color: "white" }}>
@@ -180,7 +194,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingLeft: 15,
     paddingRight: 15,
-    marginBottom: 20,
+    marginBottom: 10,
     shadowColor: "#000000",
     shadowOpacity: 0.2,
     shadowOffset: {
