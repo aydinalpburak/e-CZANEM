@@ -12,6 +12,7 @@ import MapStack from "./MapStack";
 import { Icon } from "react-native-elements";
 import getRequest from "../assets/component/getRequest";
 import { postRequest } from "../assets/component/postRequest";
+import BarcodeStack from "./BarcodeStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -149,6 +150,16 @@ export default function BottomNavigator({ route }) {
           }}
         />
         <Tab.Screen
+          name="BarcodeStack"
+          component={BarcodeStack}
+          options={{
+            title: "Reçeteli Ürün Satışı",
+            tabBarIcon: (props) => (
+              <Icon type="ionicon" name="barcode-outline" color={props.color} />
+            ),
+          }}
+        />
+        <Tab.Screen
           name="SearchStack"
           component={SearchStack}
           options={{
@@ -178,7 +189,7 @@ export default function BottomNavigator({ route }) {
             ),
           }}
         />
-        <Tab.Screen
+        {/* <Tab.Screen
           name="SettingsStack"
           component={SettingsStack}
           options={{
@@ -187,7 +198,7 @@ export default function BottomNavigator({ route }) {
               <Icon type="material-icons" name="settings" color={props.color} />
             ),
           }}
-        />
+        /> */}
       </Tab.Navigator>
     </AppContext.Provider>
   );
