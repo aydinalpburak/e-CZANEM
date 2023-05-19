@@ -13,7 +13,7 @@ import FoodRecipe from "../assets/component/foodRecipe";
 import FavoriteButton from "../assets/component/favoriteButton";
 import FoodInformation from "../assets/component/foodInformation";
 import AppContext from "../assets/globals/appContext";
-import ComboBoxExample from "../assets/component/ComboBox";
+import ComboBoxEczaneler from "../assets/component/ComboBox";
 
 function compareStrings(a, b) {
   a = a.toLowerCase();
@@ -48,7 +48,7 @@ export default function FoodView({ navigation, route }) {
           </View>
         ) : (null)}        
         <View style={ styles.comboBoxContainer }>
-            <ComboBoxExample setSelected={setSelectedPharmacy} foodId={(food.id).toString()}></ComboBoxExample>
+            <ComboBoxEczaneler setSelected={setSelectedPharmacy} foodId={(food.id).toString()}></ComboBoxEczaneler>
         </View>
       </View>
       <View style={ styles.articleContainer }>

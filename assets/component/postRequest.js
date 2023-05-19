@@ -1,10 +1,11 @@
 import axios from "axios";
 
-async function postRequestAdd(url, userid, productid) {
+async function postRequestAdd(url, userid, productid, pharmacyId) {
   try {
     const postData = {
       userid: userid,
       productid: productid,
+      pharmacyid: pharmacyId
     };
     const response = await axios.post(url, postData);
     return response.data;

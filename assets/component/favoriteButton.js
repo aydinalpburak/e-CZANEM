@@ -26,7 +26,7 @@ export default function FavoriteButton({ id, pharmacyId }){
     return(
       <TouchableOpacity
         activeOpacity={ 0.5 }
-        onPress={ () => favorites.addFavorites(id) }
+        onPress={ () => favorites.addFavorites(id, pharmacyId) }
       >
         <Icon
           type="ionicon"

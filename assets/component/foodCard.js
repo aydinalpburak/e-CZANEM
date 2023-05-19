@@ -4,7 +4,6 @@ import { Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "react-native";
 import { View } from "react-native";
 import medicineCategory from "../FoodsDB/foodCategories";
-import FavoriteButton from "./favoriteButton";
 import { Ionicons } from "@expo/vector-icons";
 import "../globals/priceBasket";
 

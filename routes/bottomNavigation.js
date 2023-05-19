@@ -52,12 +52,13 @@ export default function BottomNavigator({ route }) {
       });
   }, []);
 
-  const addFavorites = (id) => {
+  const addFavorites = (id, pharmacyId) => {
     try {
       const value = postRequest(
         "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/addNewFavoriteProduct",
         123,
-        id
+        id,
+        pharmacyId
       );
     } catch (e) {
       alert(e);
@@ -89,7 +90,8 @@ export default function BottomNavigator({ route }) {
       const value = postRequest(
         "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/deleteFavoriteProduct",
         123,
-        id
+        id,
+        pharmacyId
       );
     } catch (e) {
       alert(e);

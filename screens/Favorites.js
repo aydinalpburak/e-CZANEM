@@ -24,8 +24,6 @@ export default function Favorites({ navigation, route }) {
     setTotalPrice(getTotalPrice);
   }, []);
 
- 
-
   function get2globalArray(favorites) {
     // console.log(`Tetiklendi`);
     // global.items.forEach((element) => {
@@ -52,7 +50,7 @@ export default function Favorites({ navigation, route }) {
         setTotalPrice(getTotalPrice);
       }
     }
-    compareArraysAndDelete(favorites,global.items);
+    compareArraysAndDelete(favorites, global.items);
   }
 
   function compareArraysAndDelete(arr1, arr2) {
@@ -64,11 +62,11 @@ export default function Favorites({ navigation, route }) {
       }
     });
   }
-  
+
   function getTotalPrice() {
     var result = 0;
-    global.items.forEach(element => {
-      result = result + (parseFloat(element.price) * element.count);
+    global.items.forEach((element) => {
+      result = result + parseFloat(element.price) * element.count;
     });
     return result;
   }
@@ -125,8 +123,13 @@ export default function Favorites({ navigation, route }) {
       <TouchableOpacity
         style={styles.card}
         onPress={() => {
-          console.log("Butona Basildi - Adress Sayfasina Geciliyor");
-          navigation.push("AdressForm");
+          if (global.items.length > 0) {
+            console.log("Butona Basildi Sepet Dolu");
+            navigation.push("AdressForm");
+          }
+          else(
+            console.log("Butona Basildi Sepet Bos")
+          )
         }}
       >
         <Text style={{ fontWeight: "bold", color: "white" }}>

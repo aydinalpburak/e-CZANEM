@@ -122,7 +122,7 @@ export default function Search({ navigation, route }) {
       { true ? (
         <FlatList
         persistentScrollbar={ true }
-        data={ foods }
+        data={foods.filter((item) => item.isreceteli == "false")}
         ListHeaderComponent={() => (
           <View
             style={{
