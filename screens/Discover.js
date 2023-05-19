@@ -12,24 +12,26 @@ import getRequest from "../assets/component/getRequest";
 import { Alert } from "react-native";
 
 function shuffle(array) {
-  let currentIndex = array.length,  randomIndex;
+  let currentIndex = array.length,
+    randomIndex;
 
   while (currentIndex != 0) {
-
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
 
     [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex], array[currentIndex]];
+      array[randomIndex],
+      array[currentIndex],
+    ];
   }
 
   return array;
 }
 
- //burada islemlerini yapabiliriz... ekleme 
+//burada islemlerini yapabiliriz... ekleme
 export default function Discover({ navigation, route }) {
   const [posts, setPosts] = useState([]);
-  const [ discoverCategories, setDiscoverCategories ] = useState([]);
+  const [discoverCategories, setDiscoverCategories] = useState([]);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -40,19 +42,21 @@ export default function Discover({ navigation, route }) {
             padding: 6,
             borderRadius: 100,
           }}
-          activeOpacity={ 0.6 }
-          onPress={() => navigation.navigate('SearchStack')}
+          activeOpacity={0.6}
+          onPress={() => navigation.navigate("SearchStack")}
         >
-          <Icon type="material-icons" name="search" color="#222"/>
+          <Icon type="material-icons" name="search" color="#222" />
         </TouchableOpacity>
       ),
     });
   }, [navigation]);
- 
+
   useEffect(() => {
     var allData = [];
     const fetchPosts = async () => {
-    const postsData = await getRequest('http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/getAllProducts'); // url gelecek
+      const postsData = await getRequest(
+        "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/getAllProducts"
+      ); // url gelecek
       if (postsData) {
         setPosts(postsData);
         allData = postsData;
@@ -60,24 +64,36 @@ export default function Discover({ navigation, route }) {
       }
     };
     fetchPosts()
-      .then(itemData => discoverFoodCategories(itemData)
-          .then(data => {
-            setDiscoverCategories((shuffle(data)).splice(0, data.length < 8 ? data.length : 8)); //bu halsetDiscoverCategoriesa static kalmis
+      .then((itemData) => {
+        setPosts(itemData.filter((item) => item.isreceteli == "false")) //recetesizler gozukmeyecek
+        discoverFoodCategories(itemData)
+          .then((data) => {
+            setDiscoverCategories(
+              shuffle(data).splice(0, data.length < 8 ? data.length : 8)
+            );
           })
-          .catch(error => {
-            alert(error)
-          })).catch(error => {
+          .catch((error) => {
             alert(error);
+          });
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }, []);
 
-  })}, []);
-  
-  return(
-    <ScrollView style={ globalStyles.screen }>
-      <View style = { styles.horizontalCardsContainer }>
-        { discoverCategories.map((category, index) => {
-          return(
-            <HorizontalCardsContainer key={ index } navigation={ navigation } route={ route } foodCategory={ category } medicineFromDB={posts} />
-          )
+  return (
+    <ScrollView style={globalStyles.screen}>
+      <View style={styles.horizontalCardsContainer}>
+        {discoverCategories.map((category, index) => {
+          return (
+            <HorizontalCardsContainer
+              key={index}
+              navigation={navigation}
+              route={route}
+              foodCategory={category}
+              medicineFromDB={posts}
+            />
+          );
         })}
       </View>
     </ScrollView>
@@ -86,6 +102,6 @@ export default function Discover({ navigation, route }) {
 
 const styles = StyleSheet.create({
   horizontalCardsContainer: {
-    paddingVertical: 8
+    paddingVertical: 8,
   },
 });

@@ -37,7 +37,7 @@ export default function FoodCategory({ navigation, route }){
       ); // url gelecek
       if (postsData) {
         setDataForFlatlist(
-          postsData.filter((item) => item.type.includes(category)) //todo ise yarar
+          postsData.filter((item) => item.type.includes(category) && item.isreceteli == "false") //todo ise yarar
         );
         allData = postsData;
         return allData;

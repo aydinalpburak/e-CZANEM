@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useRef } from "react";
 import { useEffect } from "react";
+import { useContext } from "react";
 import {
   View,
   TextInput,
@@ -17,11 +18,13 @@ import FoodCard from "../assets/component/foodCard";
 import window from "../assets/controller/window";
 import globalStyles from "../assets/styles/globalStyles";
 import getRequest from "../assets/component/getRequest";
-import { bool } from "prop-types";
+import axios from "axios";
+import AppContext from "../assets/globals/appContext";
 
 const { width } = Dimensions.get("window");
 let isFirstOpen = true;
 let isAnimation = false;
+let isClick = false;
 
 function compareStrings(a, b) {
   a = a.toLowerCase();
@@ -70,7 +73,22 @@ function matchKeywords(wordToMatch, keywords) {
   }
 }
 
+async function postRequestGetReceteli(url, receteid, tcno) {
+  try {
+    const postData = {
+      receteid: receteid,
+      tcno: tcno,
+    };
+    const response = await axios.post(url, postData);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
 export default function Barcode({ navigation, route }) {
+  const favorites = useContext(AppContext); // burayi arastir bakalim
   const [searchText, setSearchText] = useState(null);
   const [posts, setPosts] = useState([]);
   const [foods, setFoods] = useState(
@@ -83,6 +101,23 @@ export default function Barcode({ navigation, route }) {
 
   const animatedValue = useRef(new Animated.Value(0)).current;
 
+  const fetchPosts = async () => {
+    const postsData = await postRequestGetReceteli(
+      "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/getReceteler",
+      receteNo,
+      tcNo
+    ); // url gelecek
+    if (postsData) {
+      setPosts(postsData);
+      stopAnimation();
+      if (isFirstOpen) {
+        setFoods(postsData);
+        isFirstOpen = false;
+      }
+      console.log(posts);
+    }
+  };
+
   const startAnimation = () => {
     Animated.loop(
       Animated.timing(animatedValue, {
@@ -93,6 +128,7 @@ export default function Barcode({ navigation, route }) {
       })
     ).start();
     isAnimation = true;
+    fetchPosts();
   };
 
   const stopAnimation = () => {
@@ -107,20 +143,8 @@ export default function Barcode({ navigation, route }) {
 
   useEffect(() => {
     console.log("istek atti");
-    const fetchPosts = async () => {
-      const postsData = await getRequest(
-        "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/getAllProducts"
-      ); // url gelecek
-      if (postsData) {
-        setPosts(postsData);
-        if (isFirstOpen) {
-          setFoods(postsData);
-          isFirstOpen = false;
-        }
-        console.log(posts);
-      }
-    };
-    fetchPosts();
+
+    //fetchPosts();
   }, [searchText]); //bu istek bir butona tasinacak...
 
   const onChange = (string) => {
@@ -135,22 +159,6 @@ export default function Barcode({ navigation, route }) {
         })
       );
   };
-
-  //   React.useLayoutEffect(() => {  //todo denemek icin yorum satirina alindi
-  //     navigation.setOptions({
-  //       headerTitle: () => (
-  //         <View style={styles.searchFieldContainer}>
-  //           <TextInput
-  //             style={styles.searchField}
-  //             keyboardType={"email-address"}
-  //             placeholder="Search..."
-  //             onChangeText={onChange}
-  //             value={searchText}
-  //           ></TextInput>
-  //         </View>
-  //       ),
-  //     });
-  //   }, [navigation, searchText]);
 
   return (
     <View style={globalStyles.screen}>
@@ -175,6 +183,7 @@ export default function Barcode({ navigation, route }) {
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
+            isClick = true;
             if (isAnimation) {
               stopAnimation();
             } else {
@@ -189,32 +198,50 @@ export default function Barcode({ navigation, route }) {
           </Animated.View>
         </TouchableOpacity>
       </View>
-      <FlatList
-        persistentScrollbar={true}
-        data={foods}
-        ListHeaderComponent={() => (
-          <View
-            style={{
-              height: 12,
-            }}
-          ></View>
-        )}
-        ListFooterComponent={() => (
-          <View
-            style={{
-              height: 12,
-            }}
-          ></View>
-        )}
-        renderItem={({ item }) => (
-          <FoodCard
-            food={item}
-            navigation={navigation}
-            route={route}
-            isSearch={true}
-          /> //todo
-        )}
-      />
+      {posts.length > 0 ? (
+        <FlatList
+          persistentScrollbar={true}
+          data={posts}
+          ListHeaderComponent={() => (
+            <View
+              style={{
+                height: 12,
+              }}
+            ></View>
+          )}
+          ListFooterComponent={() => (
+            <View
+              style={{
+                height: 12,
+              }}
+            ></View>
+          )}
+          renderItem={({ item }) => (
+            <FoodCard
+              food={item}
+              navigation={navigation}
+              route={route}
+              isSearch={true}
+            /> //todo
+          )}
+        />
+      ) : (
+        isClick && 
+        <View style={ styles.emptyContainer }>
+          <Icon
+            type="material-icons"
+            name="search"
+            size={ window.width/3 > 240 ? 240 : window.width/3 }
+            color="#bbb"
+          />
+          <View style={ styles.emptyLabelContainer }>
+            <Text style={ styles.emptyLabel }>Herhangi Bir Kayıt Bulunamadı !</Text>
+            <Text style={ styles.emptyLabelDetails }>
+              Reçete No ve TC No Doğru Girdiğinizden Emin Olunuz..!
+            </Text>
+          </View>
+        </View>
+      )}
     </View>
   );
 }
@@ -271,12 +298,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   container2: {
-    paddingTop: 50,
+    paddingTop: 10,
     flexDirection: "row",
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-
   },
   input: {
     width: "100%",

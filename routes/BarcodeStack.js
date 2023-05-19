@@ -3,12 +3,13 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Search from "../screens/Search";
 import FoodView from "../screens/FoodView";
 import FoodCategory from "../screens/FoodCategory";
+import Barcode from "../screens/Barcode";
 
 const Stack = createNativeStackNavigator();
 
 const BarcodeStack = () => (
   <Stack.Navigator
-    initialRouteName="Search"
+    initialRouteName="Barcode"
     screenOptions = {{
       headerShown: true,
       headerTitleStyle: {
@@ -19,12 +20,12 @@ const BarcodeStack = () => (
     }}
   >
     <Stack.Screen
-      name="Search"
+      name="Barcode"
       options={({ navigation, route }) => ({
-        title: "Search",
+        title: "Receteli Ürün Satışı",
       })}
     >
-      {(props) => <Search {...props}/>}
+      {(props) => <Barcode {...props}/>}
     </Stack.Screen>
 
     <Stack.Screen

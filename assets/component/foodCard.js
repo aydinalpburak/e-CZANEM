@@ -17,8 +17,9 @@ export default function FoodCard({
   isSearch,
   setTotalPrice,
 }) {
+  const backgroundColor = food.isreceteli === "true" ? "#F38E78" : 'white';
   food.image = baseUrlString + food?.image1;
-  const [foodColor, setFoodColor] = useState(() => {
+  const [medicineColor, setMedicineColor] = useState(() => {
     let result = medicineCategory.filter(({ name }) => name == food.type[0])[0];
     return result != null
       ? result.color != null
@@ -85,11 +86,11 @@ export default function FoodCard({
           style={[
             styles.cardFoodColor,
             {
-              borderColor: foodColor,
+              borderColor: medicineColor,
             },
           ]}
         ></View>
-        <View style={styles.cardDetailsContainer}>
+        <View style={[styles.cardDetailsContainer,{backgroundColor}]}>
           <Text style={{ color: "#333", fontWeight: "bold", fontSize: 16 }}>
             {food.name}
           </Text>
@@ -179,6 +180,7 @@ const styles = StyleSheet.create({
     borderRightWidth: 3,
   },
   cardDetailsContainer: {
+    //todo kontrol
     paddingVertical: 4,
     paddingHorizontal: 8,
     height: "100%",
