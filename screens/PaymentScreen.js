@@ -12,8 +12,13 @@ import {
 import { TextInput } from "react-native";
 import paymentImage from "../assets/payment.png";
 import { Picker } from "@react-native-picker/picker";
+import axios from "axios";
+import AppContext from "../assets/globals/appContext";
+import { useContext } from "react";
 
 export default function PaymentPage({ navigation, route }) {
+  const favorites = useContext(AppContext);
+  const [infoValues, setInfoValues] = useState(route.params);
   const [isPaymentSuccessModalVisible, setIsPaymentSuccessModalVisible] =
     useState(false);
   const [isPaymentAtDoor, setIsPaymentAtDoor] = useState(false);
@@ -22,7 +27,27 @@ export default function PaymentPage({ navigation, route }) {
   const [expiryMonth, setExpiryMonth] = useState("");
   const [expiryYear, setExpiryYear] = useState("");
   const [params, setParams] = useState(route.params);
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [_orderid, setOrderID] = useState(getRandomNumber());
 
+  async function postRequestMakeOrder(url, userid, adress, orderid, medicines) {
+    try {
+      const postData = {
+        userid: userid,
+        adress: adress,
+        orderid: orderid,
+        medicines: medicines,
+      };
+      const response = await axios.post(url, postData);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+  function getRandomNumber() {
+    return Math.floor(Math.random() * 500001); // 0 ile 500000 arasında rastgele bir sayı
+  }
   const [months, setMonths] = useState([
     "Ay Seçin",
     "01",
@@ -77,10 +102,19 @@ export default function PaymentPage({ navigation, route }) {
   function handleCreditCardPayment() {
     // Credit Card payment handling code goes here
     if (cardNumber && cvv && cardNumber.length == 16 && cvv.length == 3) {
-      setIsPaymentSuccessModalVisible(true);
       console.log(
         `Card Number: ${cardNumber}, Expiry Month: ${expiryMonth}, Expiry Year: ${expiryYear}, CVV: ${cvv}`
       );
+      //Odeme yapildi database gonderme islemi baslasin...
+      let url =
+        "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/makeOrder";
+      let userid = 123;
+      let adress = infoValues.adress;
+      let orderid = _orderid;
+      let medicines = infoValues.urunler; //todo sabit degiskenler en son full degisecek
+      postRequestMakeOrder(url, userid, adress, orderid, medicines).then(favorites.deleteAllFavoritesGivenUser(123)).then(global.items=[]);
+      setIsDisabled(true);
+      setIsPaymentSuccessModalVisible(true);
     } else {
       // One or more fields are empty, show an error message
       Alert.alert("Hata!", "Lütfen tüm alanları eksiksiz doldurunuz!", [
@@ -91,10 +125,20 @@ export default function PaymentPage({ navigation, route }) {
       ]);
     }
   }
+  function handleAtDoorPayment() {
+    let url =
+      "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/makeOrder";
+    let userid = 123432;
+    let adress = infoValues.adress;
+    let orderid = _orderid;
+    let medicines = infoValues.urunler;
+    postRequestMakeOrder(url, userid, adress, orderid, medicines).then(favorites.deleteAllFavoritesGivenUser(123)).then(global.items=[]);
+    setIsDisabled(true);
+    setIsPaymentSuccessModalVisible(true);
+  }
 
   function handlePaymentAtDoorClick() {
     setIsPaymentAtDoor(true);
-    setIsPaymentSuccessModalVisible(true);
   }
 
   function renderPaymentSuccessModal() {
@@ -108,13 +152,19 @@ export default function PaymentPage({ navigation, route }) {
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Ödeme Yöntemi Seçme Başarılı!</Text>
             {isPaymentAtDoor ? (
-              <Text style={styles.modalText}>
-                Seçilen Ödeme Yöntemi: Kapıda Ödeme.
-              </Text>
+              <View>
+                <Text style={styles.modalText}>
+                  Seçilen Ödeme Yöntemi: Kapıda Ödeme.
+                </Text>
+                <Text>Spariş No: {_orderid}</Text>
+              </View>
             ) : (
-              <Text style={styles.modalText}>
-                Seçilen Ödeme Yöntemi: Kart ile Ödeme.
-              </Text>
+              <View>
+                <Text style={styles.modalText}>
+                  Seçilen Ödeme Yöntemi: Kart ile Ödeme.
+                </Text>
+                <Text>Spariş No: {_orderid}</Text>
+              </View>
             )}
             <TouchableOpacity
               style={styles.modalButton}
@@ -166,7 +216,25 @@ export default function PaymentPage({ navigation, route }) {
       </View>
       <View style={styles.expiryPickerContainer}></View>
 
-      {!isPaymentAtDoor && (
+      {isPaymentAtDoor ? (
+        <View>
+          <Text
+            style={{ marginBottom: 10, color: "black", fontStyle: "italic" }}
+          >
+            Bu seçenek ile kapıda ister nakit ister kredi kartı ile ödeme
+            yapabilirsiniz...
+          </Text>
+          <TouchableOpacity
+            style={styles.creditCardPaymentButton}
+            onPress={handleAtDoorPayment}
+            disabled={isDisabled}
+          >
+            <Text style={styles.creditCardPaymentButtonText}>
+              Ödemeyi tamamla
+            </Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
         <View style={styles.creditCardFormContainer}>
           <TextInput
             style={styles.creditCardInput}
@@ -224,6 +292,7 @@ export default function PaymentPage({ navigation, route }) {
           <TouchableOpacity
             style={styles.creditCardPaymentButton}
             onPress={handleCreditCardPayment}
+            disabled={isDisabled}
           >
             <Text style={styles.creditCardPaymentButtonText}>
               Ödemeyi tamamla

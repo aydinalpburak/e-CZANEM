@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { StyleSheet } from "react-native";
 import { Image } from "react-native";
 import { Text } from "react-native";
@@ -13,7 +13,7 @@ import FoodRecipe from "../assets/component/foodRecipe";
 import FavoriteButton from "../assets/component/favoriteButton";
 import FoodInformation from "../assets/component/foodInformation";
 import AppContext from "../assets/globals/appContext";
-import ComboBoxEczaneler from "../assets/component/ComboBox";
+import ComboBoxExample from "../assets/component/ComboBox";
 
 function compareStrings(a, b) {
   a = a.toLowerCase();
@@ -27,6 +27,7 @@ export default function FoodView({ navigation, route }) {
   const [food, setFood] = useState(route.params);
   const [foodType, setFoodType] = useState(food.type);
   const [selectedPharmacy, setSelectedPharmacy] = useState(-1);
+  const [isEnabledCombo, setIsEnabledCombo] = useState(true);
   const favorites = useContext(AppContext);
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -37,18 +38,23 @@ export default function FoodView({ navigation, route }) {
   foodType.sort(function(a, b) {
     return compareStrings(a, b);
   });
+  useEffect(() => 
+  {
+    if(favorites?.favs.find((item) => item.T1.id == food.id)){setIsEnabledCombo(false)}
+    else{setIsEnabledCombo(true)}
+  }, [favorites.favs]);
 
   return (
     <ScrollView style={ globalStyles.screen }>
       <View>
         <Image source={{uri: baseUrlString + food.image1}} style={ styles.image } />
-        {(selectedPharmacy != -1) || (favorites?.favs.find((item) => item.id == food.id)) ? ( //todoB burasi onemli
+        {(selectedPharmacy != -1) || (favorites?.favs.find((item) => item.T1.id == food.id)) ? ( //todoB burasi onemli
           <View style={ styles.favoriteButtonContainer }>
           <FavoriteButton id={ food.id } pharmacyId={selectedPharmacy}/>
           </View>
         ) : (null)}        
         <View style={ styles.comboBoxContainer }>
-            <ComboBoxEczaneler setSelected={setSelectedPharmacy} foodId={(food.id).toString()}></ComboBoxEczaneler>
+            <ComboBoxExample isEnabledCombo={isEnabledCombo} setSelected={setSelectedPharmacy} foodId={(food.id).toString()}></ComboBoxExample>
         </View>
       </View>
       <View style={ styles.articleContainer }>

@@ -18,7 +18,7 @@ export default function App() {
   return (
     //<HelloWorldApp></HelloWorldApp>
     <NavigationContainer>
-      <BottomNavigator />
+      <LoginMainScreen></LoginMainScreen>
     </NavigationContainer>
     //<AddressForm></AddressForm>
   );

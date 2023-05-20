@@ -6,7 +6,7 @@ import getRequest from "../component/getRequest";
 //gelen food id stok bilgisinde aranacak stok olanlar ekrana basilacak
 //eger comboboxdan herhangi biri secilmediyse bu sefer sepete eklenemeyecekk
 
-const ComboBoxEczaneler = ({ foodId, setSelected }) => {
+const ComboBoxEczaneler = ({ foodId, setSelected, isEnabledCombo}) => {
   const [selectedLanguage, setSelectedPharmacy] = useState();
   const [eczaneler, setEczaneler] = useState();
 
@@ -41,6 +41,7 @@ const ComboBoxEczaneler = ({ foodId, setSelected }) => {
 
   return (
     <Picker
+      enabled={isEnabledCombo}
       mode="dialog"
       selectedValue={selectedLanguage}
       onValueChange={(itemValue, itemIndex) => {
@@ -51,7 +52,11 @@ const ComboBoxEczaneler = ({ foodId, setSelected }) => {
       <Picker.Item enabled={false} label="Eczane Seçiniz" value="FirstLoad" />
       {eczaneler?.length > 0 &&
         eczaneler.map((eczane, index) => (
-          <Picker.Item key={index} label={eczane.isim} value={eczane.eczaneid} />
+          <Picker.Item
+            key={index}
+            label={eczane.isim}
+            value={eczane.eczaneid}
+          />
         ))}
     </Picker>
   );

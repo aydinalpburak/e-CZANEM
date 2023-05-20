@@ -10,12 +10,14 @@ import BackButton from "../components/BackButton";
 import { theme } from "../core/theme";
 import { emailValidator } from "../helpers/emailValidator";
 import { passwordValidator } from "../helpers/passwordValidator";
+import axios from "axios";
+import { Alert } from "react-native";
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
 
-  const onLoginPressed = () => {
+   const onLoginPressed  = async () => {
     const emailError = emailValidator(email.value);
     const passwordError = passwordValidator(password.value);
     if (emailError || passwordError) {
@@ -23,17 +25,41 @@ export default function LoginScreen({ navigation }) {
       setPassword({ ...password, error: passwordError });
       return;
     }
-    navigation.reset({
-      index: 0,
-      routes: [
-        {
-          name: "App",
-          params: { param1: "value1" },
-        },
-      ],
-    });
+    //eger db den true gelmez ise sorgu
+    var resultFromDb = await postRequestAdd(email, password);
+    if (resultFromDb != undefined && resultFromDb.length > 0) {
+      navigation.reset({
+        index: 0,
+        routes: [
+          {
+            name: "App",
+            params: resultFromDb
+          },
+        ],
+      });
+    }
+    else
+    {
+        alert("Kullanıcı Bulunamadı");
+    }
   };
 
+  async function postRequestAdd(email, password) {
+    try {
+      const postData = {
+        email: email.value,
+        password: password.value,
+      };
+      const response = await axios.post(
+        "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/postLogin",
+        postData
+      );
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
   return (
     <Background>
       <BackButton goBack={navigation.goBack} />

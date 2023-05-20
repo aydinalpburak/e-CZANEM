@@ -22,7 +22,7 @@ export default function Favorites({ navigation, route }) {
 
   useEffect(() => {
     setTotalPrice(getTotalPrice);
-  }, []);
+  }, [favorites.foods]);
 
   function get2globalArray(favorites) {
     // console.log(`Tetiklendi`);
@@ -32,9 +32,10 @@ export default function Favorites({ navigation, route }) {
     //console.log(`---------------------------------------------------`);
     for (let i = 0; i < favorites.length; i++) {
       let newProduct = {
-        id: favorites[i].id,
-        price: favorites[i].price,
+        id: favorites[i].T1.id,
+        price: favorites[i].T1.price,
         count: 1,
+        pharmacyid: favorites[i].T2.pharmacyid,
       };
       let isFound = false;
       global.items.forEach((element) => {
@@ -55,7 +56,7 @@ export default function Favorites({ navigation, route }) {
 
   function compareArraysAndDelete(arr1, arr2) {
     arr2.forEach((item, i) => {
-      if (!arr1.some((el) => el.id === item.id)) {
+      if (!arr1.some((el) => el.T1.id === item.id)) {
         console.log(`Silindi ${item.id} ${item.price} ${item.count}`);
         setTotalPrice(getTotalPrice);
         arr2.splice(i, 1);
@@ -112,7 +113,7 @@ export default function Favorites({ navigation, route }) {
               <FoodCard
                 navigation={navigation}
                 route={route}
-                food={item}
+                food={item.T1}
                 isSearch={false}
                 setTotalPrice={setTotalPrice}
               />
@@ -125,7 +126,7 @@ export default function Favorites({ navigation, route }) {
         onPress={() => {
           if (global.items.length > 0) {
             console.log("Butona Basildi Sepet Dolu");
-            navigation.push("AdressForm");
+            navigation.push("AdressForm", global.items);
           }
           else(
             console.log("Butona Basildi Sepet Bos")

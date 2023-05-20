@@ -13,19 +13,21 @@ import { Icon } from "react-native-elements";
 import getRequest from "../assets/component/getRequest";
 import { postRequest } from "../assets/component/postRequest";
 import BarcodeStack from "./BarcodeStack";
+import axios from "axios";
 
 const Tab = createBottomTabNavigator();
 
 export default function BottomNavigator({ route }) {
   const [favs, setFavs] = useState();
   const [foods, setFoods] = useState();
+  const [userInfo, setUserInfo] = useState(route.params[0]);
   //console.log(`Kullanici adi: ${route.params["param1"]}`); //giris sayfasindan gelen veriler buraya aktarilacak
   const getData = async () => {
     try {
-      const value = await getRequest(
-        "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/getFavoritesProducts?id=123"
-      );
-      // console.log(value);
+      let urlRequest = 
+        "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/getFavoritesProducts?id=" +
+        userInfo.id;
+      const value = await getRequest(urlRequest);
       return value != null ? value : [];
     } catch (e) {
       alert(e);
@@ -55,7 +57,7 @@ export default function BottomNavigator({ route }) {
   const addFavorites = (id, pharmacyId) => {
     try {
       const value = postRequest(
-        "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/addNewFavoriteProduct",
+        "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/addNewFavoriteProduct", //todo gondermeden once kontrol edicek
         123,
         id,
         pharmacyId
@@ -85,7 +87,7 @@ export default function BottomNavigator({ route }) {
       });
   };
 
-  const deleteFavorites = (id) => {
+  const deleteFavorites = (id, pharmacyId) => {
     try {
       const value = postRequest(
         "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/deleteFavoriteProduct",
@@ -107,12 +109,32 @@ export default function BottomNavigator({ route }) {
       });
   };
 
+  const deleteAllFavoritesGivenUser = (userid) => {
+    try {
+      let url =
+        "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/deleteAllFavoriteProduct?userid=" +
+        userid;
+      const value = getRequest(url);
+    } catch (e) {
+      alert(e);
+    }
+    getData()
+      .then((data) => {
+        setFavs(data != null ? data : []);
+        setFoods(data != null ? data : []);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+
   const favorites = {
     favs: favs,
     foods: foods,
     addFavorites,
     clearFavorites,
     deleteFavorites,
+    deleteAllFavoritesGivenUser,
   };
 
   return (

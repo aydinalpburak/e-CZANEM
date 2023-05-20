@@ -88,7 +88,6 @@ async function postRequestGetReceteli(url, receteid, tcno) {
 }
 
 export default function Barcode({ navigation, route }) {
-  const favorites = useContext(AppContext); // burayi arastir bakalim
   const [searchText, setSearchText] = useState(null);
   const [posts, setPosts] = useState([]);
   const [foods, setFoods] = useState(

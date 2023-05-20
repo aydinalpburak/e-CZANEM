@@ -18,6 +18,7 @@ import { Row } from "native-base";
 const { height } = Dimensions.get("window");
 
 export default function AddressForm({ navigation, route }) {
+  const [sepet, setSepet] = useState(route.params);
   const [neighborhood, setNeighborhood] = useState("");
   const [street, setStreet] = useState("");
   const [buildingNumber, setBuildingNumber] = useState("");
@@ -43,10 +44,12 @@ export default function AddressForm({ navigation, route }) {
   const handleSubmit = () => {
     // Handle the form submission here
     console.log("Butona Basildi - Odeme Sayfasina Geciliyor");
-    const AdressInfo ={
-      //todo adres bilgisi burada array olarak tutulacak ve gonderilecek peki ya konum lat ve long bilgileri nasil gonderilecek,
+    let adressString = `Kapı No:${doorNumber} Kat:${floorNumber} Bina No:${buildingNumber} ${street} ${neighborhood} ${district} ${city}`;
+    const AdressAndBasketInfo ={
+      urunler: sepet,
+      adress: adressString
     }
-    navigation.push("PaymentScreen",["Att1","Att2"]); //todo odeme ekranina kisinin bilgisi gonderilecek...
+    navigation.push("PaymentScreen",AdressAndBasketInfo); //todo odeme ekranina kisinin bilgisi gonderilecek...
   };
 
   function stringAdress(item) {

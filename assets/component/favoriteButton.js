@@ -8,11 +8,11 @@ import AppContext from "../globals/appContext";
 export default function FavoriteButton({ id, pharmacyId }){
   const favorites = useContext(AppContext); // burayi arastir bakalim
 
-  if((favorites?.favs.find((food) => food.id == id) ? true : false) == true){
+  if((favorites?.favs.find((food) => food.T1.id == id) ? true : false) == true){
     return(
       <TouchableOpacity
         activeOpacity={ 0.5 }
-        onPress={ () => favorites.deleteFavorites(id) }
+        onPress={ () => favorites.deleteFavorites(id, pharmacyId) }
       >
         <Icon
           type="ionicon"
