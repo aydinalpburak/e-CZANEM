@@ -214,16 +214,16 @@ export default function BottomNavigator({ route }) {
             ),
           }}
         />
-        {/* <Tab.Screen
+        {<Tab.Screen
           name="SettingsStack"
           component={SettingsStack}
           options={{
-            title: "Ayarlar",
+            title: "Hesabım",
             tabBarIcon: (props) => (
-              <Icon type="material-icons" name="settings" color={props.color} />
+              <Icon type="material-icons" name="account" color={props.color} />
             ),
           }}
-        /> */}
+        />}
       </Tab.Navigator>
     </AppContext.Provider>
   );

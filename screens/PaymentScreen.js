@@ -114,7 +114,7 @@ export default function PaymentPage({ navigation, route }) {
       let adress = infoValues.adress;
       let orderid = _orderid;
       let medicines = infoValues.urunler;
-      let ordertype = "online";
+      let ordertype = "Kart İle Ödeme";
       postRequestMakeOrder(url, userid, adress, orderid, medicines, ordertype).then(favorites.deleteAllFavoritesGivenUser(global.userid)).then(global.items=[]);
       setIsDisabled(true);
       setIsPaymentSuccessModalVisible(true);
@@ -135,7 +135,7 @@ export default function PaymentPage({ navigation, route }) {
     let adress = infoValues.adress;
     let orderid = _orderid;
     let medicines = infoValues.urunler;
-    let ordertype = "door";
+    let ordertype = "Kapıda Ödeme";
     postRequestMakeOrder(url, userid, adress, orderid, medicines, ordertype).then(favorites.deleteAllFavoritesGivenUser(global.userid)).then(global.items=[]);
     setIsDisabled(true);
     setIsPaymentSuccessModalVisible(true);

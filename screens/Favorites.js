@@ -137,7 +137,8 @@ export default function Favorites({ navigation, route }) {
           Toplam Fiyat:
         </Text>
         <Text style={{ fontWeight: "bold", color: "black", marginLeft: 5 }}>
-          {(Math.round(totalPrice * 100) / 100).toFixed(2)}
+          { //todo Kontrol et duzgun calisior mu?
+          (Math.round(totalPrice * 100) / 100).toFixed(2)}
         </Text>
       </TouchableOpacity>
     </View>
