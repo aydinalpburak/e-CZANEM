@@ -5,14 +5,14 @@ import { TouchableOpacity } from "react-native";
 import { Icon } from "react-native-elements";
 import AppContext from "../globals/appContext";
 
-export default function FavoriteButton({ id, pharmacyId }){
+export default function FavoriteButton({ productid, pharmacyId, userid }){
   const favorites = useContext(AppContext); // burayi arastir bakalim
 
-  if((favorites?.favs.find((food) => food.T1.id == id) ? true : false) == true){
+  if((favorites?.favs.find((medicine) => medicine.T1.id == productid) ? true : false) == true){
     return(
       <TouchableOpacity
         activeOpacity={ 0.5 }
-        onPress={ () => favorites.deleteFavorites(id, pharmacyId) }
+        onPress={ () => favorites.deleteFavorites(productid, pharmacyId, userid) }
       >
         <Icon
           type="ionicon"
@@ -26,7 +26,7 @@ export default function FavoriteButton({ id, pharmacyId }){
     return(
       <TouchableOpacity
         activeOpacity={ 0.5 }
-        onPress={ () => favorites.addFavorites(id, pharmacyId) }
+        onPress={ () => favorites.addFavorites(productid, pharmacyId, userid) }
       >
         <Icon
           type="ionicon"

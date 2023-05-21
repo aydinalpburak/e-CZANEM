@@ -15,6 +15,7 @@ import { Picker } from "@react-native-picker/picker";
 import axios from "axios";
 import AppContext from "../assets/globals/appContext";
 import { useContext } from "react";
+import "../assets/globals/priceBasket"
 
 export default function PaymentPage({ navigation, route }) {
   const favorites = useContext(AppContext);
@@ -30,13 +31,14 @@ export default function PaymentPage({ navigation, route }) {
   const [isDisabled, setIsDisabled] = useState(false);
   const [_orderid, setOrderID] = useState(getRandomNumber());
 
-  async function postRequestMakeOrder(url, userid, adress, orderid, medicines) {
+  async function postRequestMakeOrder(url, userid, adress, orderid, medicines, ordertype) {
     try {
       const postData = {
         userid: userid,
         adress: adress,
         orderid: orderid,
         medicines: medicines,
+        ordertype: ordertype
       };
       const response = await axios.post(url, postData);
       return response.data;
@@ -108,11 +110,12 @@ export default function PaymentPage({ navigation, route }) {
       //Odeme yapildi database gonderme islemi baslasin...
       let url =
         "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/makeOrder";
-      let userid = 123;
+      let userid = global.userid;
       let adress = infoValues.adress;
       let orderid = _orderid;
-      let medicines = infoValues.urunler; //todo sabit degiskenler en son full degisecek
-      postRequestMakeOrder(url, userid, adress, orderid, medicines).then(favorites.deleteAllFavoritesGivenUser(123)).then(global.items=[]);
+      let medicines = infoValues.urunler;
+      let ordertype = "online";
+      postRequestMakeOrder(url, userid, adress, orderid, medicines, ordertype).then(favorites.deleteAllFavoritesGivenUser(global.userid)).then(global.items=[]);
       setIsDisabled(true);
       setIsPaymentSuccessModalVisible(true);
     } else {
@@ -128,11 +131,12 @@ export default function PaymentPage({ navigation, route }) {
   function handleAtDoorPayment() {
     let url =
       "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/makeOrder";
-    let userid = 123432;
+    let userid = global.userid;
     let adress = infoValues.adress;
     let orderid = _orderid;
     let medicines = infoValues.urunler;
-    postRequestMakeOrder(url, userid, adress, orderid, medicines).then(favorites.deleteAllFavoritesGivenUser(123)).then(global.items=[]);
+    let ordertype = "door";
+    postRequestMakeOrder(url, userid, adress, orderid, medicines, ordertype).then(favorites.deleteAllFavoritesGivenUser(global.userid)).then(global.items=[]);
     setIsDisabled(true);
     setIsPaymentSuccessModalVisible(true);
   }
@@ -168,7 +172,18 @@ export default function PaymentPage({ navigation, route }) {
             )}
             <TouchableOpacity
               style={styles.modalButton}
-              onPress={() => setIsPaymentSuccessModalVisible(false)}
+              onPress={() => {
+                setIsPaymentSuccessModalVisible(false)
+                navigation.reset({
+                  index: 0,
+                  routes: [
+                    {
+                      name: "DiscoverStack",
+                      // params: resultFromDb
+                    },
+                  ],
+                });
+              }}
             >
               <Text style={styles.modalButtonText}>Tamam</Text>
             </TouchableOpacity>

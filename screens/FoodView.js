@@ -14,6 +14,7 @@ import FavoriteButton from "../assets/component/favoriteButton";
 import FoodInformation from "../assets/component/foodInformation";
 import AppContext from "../assets/globals/appContext";
 import ComboBoxExample from "../assets/component/ComboBox";
+import "../assets/globals/priceBasket";
 
 function compareStrings(a, b) {
   a = a.toLowerCase();
@@ -50,7 +51,7 @@ export default function FoodView({ navigation, route }) {
         <Image source={{uri: baseUrlString + food.image1}} style={ styles.image } />
         {(selectedPharmacy != -1) || (favorites?.favs.find((item) => item.T1.id == food.id)) ? ( //todoB burasi onemli
           <View style={ styles.favoriteButtonContainer }>
-          <FavoriteButton id={ food.id } pharmacyId={selectedPharmacy}/>
+          <FavoriteButton productid={ food.id } pharmacyId={selectedPharmacy} userid={global.userid}/>
           </View>
         ) : (null)}        
         <View style={ styles.comboBoxContainer }>

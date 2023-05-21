@@ -13,7 +13,7 @@ import CustomButton from "../assets/component/CustomButton";
 import * as Location from "expo-location";
 import Background from "../src/components/Background";
 import Popup from "../assets/component/Popup";
-import { Row } from "native-base";
+
 
 const { height } = Dimensions.get("window");
 
@@ -42,14 +42,20 @@ export default function AddressForm({ navigation, route }) {
     "Adres Bilgisi Bulunamadı, Butona Tekrardan Basabilir Veya Eliniz İle Adres Bilgisini Girebilirsiniz.";
 
   const handleSubmit = () => {
-    // Handle the form submission here
-    console.log("Butona Basildi - Odeme Sayfasina Geciliyor");
-    let adressString = `Kapı No:${doorNumber} Kat:${floorNumber} Bina No:${buildingNumber} ${street} ${neighborhood} ${district} ${city}`;
-    const AdressAndBasketInfo ={
-      urunler: sepet,
-      adress: adressString
+    if(city != "" && district !="" && neighborhood != "" && street !="" && buildingNumber !="" && floorNumber !="" && doorNumber !="" && phoneNumber !="")
+    {
+      console.log("Butona Basildi - Odeme Sayfasina Geciliyor");
+      let adressString = `Kapı No:${doorNumber} Kat:${floorNumber} Bina No:${buildingNumber} ${street} ${neighborhood} ${district} ${city}`;
+      const AdressAndBasketInfo ={
+        urunler: sepet,
+        adress: adressString
+      }
+      navigation.push("PaymentScreen",AdressAndBasketInfo); //todo odeme ekranina kisinin bilgisi gonderilecek...
+    }  
+    else
+    {
+      alert("Lütfen Tüm Alanları Doldurunuz !");
     }
-    navigation.push("PaymentScreen",AdressAndBasketInfo); //todo odeme ekranina kisinin bilgisi gonderilecek...
   };
 
   function stringAdress(item) {
@@ -162,6 +168,7 @@ export default function AddressForm({ navigation, route }) {
             style={styles.input}
             placeholder="Telefon Numarası"
             value={phoneNumber}
+            keyboardType="numeric"
             onChangeText={setPhoneNumber}
           />
 

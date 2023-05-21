@@ -24,7 +24,7 @@ export default function BottomNavigator({ route }) {
   //console.log(`Kullanici adi: ${route.params["param1"]}`); //giris sayfasindan gelen veriler buraya aktarilacak
   const getData = async () => {
     try {
-      let urlRequest = 
+      let urlRequest =
         "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/getFavoritesProducts?id=" +
         userInfo.id;
       const value = await getRequest(urlRequest);
@@ -34,16 +34,17 @@ export default function BottomNavigator({ route }) {
     }
   };
 
-  const saveData = async (foodIds) => {
-    try {
-      const value = JSON.stringify(foodIds);
-      await AsyncStorage.setItem("favorites", value);
-    } catch (e) {
-      alert(e);
-    }
-  };
-
   useEffect(() => {
+    //--------------User Global Values--------------
+    global.userid = userInfo.id;
+    global.name = userInfo.name;
+    global.surname = userInfo.surname;
+    global.tc = userInfo.tc;
+    global.adress = userInfo.adress;
+    global.password = userInfo.password;
+    global.email =userInfo.email;
+    global.phonenumber = userInfo.phonenumber ;
+    //--------------User Global Values End--------------
     getData()
       .then((data) => {
         setFavs(data != null ? data : []);
@@ -54,12 +55,12 @@ export default function BottomNavigator({ route }) {
       });
   }, []);
 
-  const addFavorites = (id, pharmacyId) => {
+  const addFavorites = (productid, pharmacyId, userid) => {
     try {
       const value = postRequest(
         "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/addNewFavoriteProduct", //todo gondermeden once kontrol edicek
-        123,
-        id,
+        userid,
+        productid,
         pharmacyId
       );
     } catch (e) {
@@ -87,12 +88,12 @@ export default function BottomNavigator({ route }) {
       });
   };
 
-  const deleteFavorites = (id, pharmacyId) => {
+  const deleteFavorites = (productid, pharmacyId, userid) => {
     try {
       const value = postRequest(
         "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/deleteFavoriteProduct",
-        123,
-        id,
+        userid,
+        productid,
         pharmacyId
       );
     } catch (e) {
