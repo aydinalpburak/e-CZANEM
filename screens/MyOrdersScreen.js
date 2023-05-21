@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet, FlatList, TextInput } from "react-native";
 import MyOrdersCard from "../assets/component/MyOrdersCard";
 import getRequest from "../assets/component/getRequest";
-
-const MyOrdersScreen = () => {
+import "../assets/globals/priceBasket";
+const MyOrdersScreen = ({ navigation, routes }) => {
   const [searchText, setSearchText] = useState("");
   const [ordersDB, setOrdersDB] = useState();
 
@@ -14,7 +14,7 @@ const MyOrdersScreen = () => {
   const fetchOrders = async () => {
     let url =
       "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/getOrdersForUsers?userid=" +
-      10;
+      global.userid;
     const getOrders = await getRequest(url);
     if (getOrders) {
       setOrdersDB(getOrders);
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    marginTop: 50,
+    marginTop: -10,
     paddingLeft: 20,
     paddingRight: 20,
   },

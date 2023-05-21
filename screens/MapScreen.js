@@ -16,7 +16,7 @@ const Maps = () => {
             return `${item.district} mah. ${item.street} cd. \nNo:${item.streetNumber} ${item.subregion}/${item.region}`;
         }
         else {
-            return "Bilgi Bulunamadi";
+            return "Bilgi Bulunamadı";
         }
     }
 
@@ -115,7 +115,7 @@ const Maps = () => {
                     )}                   
             </MapView>
             <TouchableOpacity style={styles.button} onPress={handlePress}>
-                <Text style={styles.buttonText}>Konum Guncelle</Text>
+                <Text style={styles.buttonText}>Konum Güncelle</Text>
             </TouchableOpacity>
         </View>
     );

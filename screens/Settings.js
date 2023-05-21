@@ -8,10 +8,6 @@ import { View } from "react-native";
 import { Icon } from "react-native-elements";
 import globalStyles from "../assets/styles/globalStyles";
 import AppContext from "../assets/globals/appContext";
-import { Modal } from "react-native";
-import { Pressable } from "react-native";
-import window from "../assets/controller/window";
-import modalStyles from "../assets/styles/modalStyles";
 
 export default function Settings({ navigation, routes }) {
   const favorites = useContext(AppContext);
@@ -20,35 +16,54 @@ export default function Settings({ navigation, routes }) {
   return(
     <ScrollView style={ globalStyles.screen }>
       <View style={ styles.settingsContainer }>
-        <TouchableOpacity
+
+      <TouchableOpacity
           activeOpacity={ 0.75 }
           style={ styles.settingContainer }
-          onPress={() => setClearFavoritesModal(true)}
+          onPress={() => navigation.push("Info")}
         >
           <View style={ styles.settingIconContainer }>
             <Icon
-              type="material-icons"
-              name="delete"
-              color="#ff4040"
-            />
-          </View>
-          <Text style={ [ styles.settingLabel, { color: "#ff4040" } ] }>Clear Favorites</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          activeOpacity={ 0.75 }
-          style={ styles.settingContainer }
-          onPress={() => navigation.push("FoodCategory")}
-        >
-          <View style={ styles.settingIconContainer }>
-            <Icon
-              type="material-icons"
-              name="info-outline"
+              type="ionicon"
+              name="body-outline"
               color="#444"
             />
           </View>
-          <Text style={ styles.settingLabel }>Hakkinda</Text>
+          <Text style={ styles.settingLabel }>Bilgilerim</Text>
         </TouchableOpacity>
+
+      <TouchableOpacity
+          activeOpacity={ 0.75 }
+          style={ styles.settingContainer }
+          onPress={() => navigation.push("MyOrdersScreen")}
+        >
+          <View style={ styles.settingIconContainer }>
+            <Icon
+              type="ionicon"
+              name="receipt-outline"
+              color="#444"
+            />
+          </View>
+          <Text style={ styles.settingLabel }>Siparişlerim</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity
+          activeOpacity={ 0.75 }
+          style={ styles.settingContainer }
+          onPress={() => navigation.push("ChangePassScreen")}
+        >
+          <View style={ styles.settingIconContainer }>
+            <Icon
+              type="ionicon"
+              name="key-outline"
+              color="#444"
+            />
+          </View>
+          <Text style={ styles.settingLabel }>Şifreyi Değiştir</Text>
+        </TouchableOpacity>
+
+
+        <TouchableOpacity 
           activeOpacity={ 0.75 }
           style={ styles.settingContainer }
           onPress={() => navigation.push("About")}
@@ -60,40 +75,13 @@ export default function Settings({ navigation, routes }) {
               color="#444"
             />
           </View>
-          <Text style={ styles.settingLabel }>Deneme</Text>
+          <Text style={ styles.settingLabel }>Hakkımızda</Text>
         </TouchableOpacity>
+
+
+
       </View>
-      <Modal
-        animationType="fade"
-        transparent={ true }
-        visible={ clearFavoritesModal }
-        onRequestClose={() => {
-          setClearFavoritesModal(!clearFavoritesModal);
-        }}
-      >
-        <View style={modalStyles.centeredView}>
-          <View style={modalStyles.modalView}>
-            <Text style={modalStyles.modalText}>Are you sure you want to clear your favorites?</Text>
-            <View style={ modalStyles.modalButtons }>
-              <Pressable
-                style={[modalStyles.button, modalStyles.buttonClear]}
-                onPress={() => {
-                  setClearFavoritesModal(!clearFavoritesModal);
-                  favorites.clearFavorites();
-                }}
-              >
-                <Text style={modalStyles.textStyle}>Yes</Text>
-              </Pressable>
-              <Pressable
-                style={[modalStyles.button, modalStyles.buttonClose]}
-                onPress={() => setClearFavoritesModal(!clearFavoritesModal)}
-              >
-                <Text style={modalStyles.textStyle}>No</Text>
-              </Pressable>
-            </View>
-          </View>
-        </View>
-      </Modal>
+    
     </ScrollView>
   );
 }
@@ -101,6 +89,7 @@ export default function Settings({ navigation, routes }) {
 const styles = StyleSheet.create({
   settingsContainer: {
     margin: 8,
+    marginTop: -10
   },
   settingContainer: {
     flexDirection: 'row',

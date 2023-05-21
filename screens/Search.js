@@ -11,8 +11,6 @@ import FoodCard from "../assets/component/foodCard";
 import window from "../assets/controller/window";
 import globalStyles from "../assets/styles/globalStyles";
 import getRequest from "../assets/component/getRequest";
-import { bool } from "prop-types";
-
 let isFirstOpen = true;
 
 function compareStrings(a, b) {
@@ -108,7 +106,7 @@ export default function Search({ navigation, route }) {
           <TextInput
             style={ styles.searchField }
             keyboardType={ "email-address" }
-            placeholder="Search..."
+            placeholder="Ürün Adı Giriniz..."
             onChangeText={ onChange }
             value={ searchText }
           ></TextInput>

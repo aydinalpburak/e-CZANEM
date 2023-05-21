@@ -1,75 +1,87 @@
-import React from "react";
-import { ScrollView } from "react-native";
-import { Image, StyleSheet, Text } from "react-native";
-import { View } from "react-native";
-import window from "../assets/controller/window";
-import globalStyles from "../assets/styles/globalStyles";
+import React from 'react';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 
-const app = require(`../app.json`).expo;
+const AboutScreen = () => {
+  const data = [
+    {
+      id: '1',
+      title: 'e-CZANEM',
+      description:
+        'Bir mobil eczane uygulaması olarak 2023 yılında kullanıcılara sunulmuş olan e-CZANEM, temelinde kullanıcıların ilaçlarına kolayca erişmesini sağlayarak eczane hasta arasındaki iletişimi hızlandırmayı hedeflemektedir.',
+      color: '#FFC107',
+    },
+    {
+      id: '2',
+      title: 'Amaç',
+      description:
+        'Amacımız, kullanıcıların ilaç, vitamin, takviye gıda vb. ihtiyaçlarına hızlı ve güvenli bir şekilde ulaşmalarını sağlamak ve sağlık sektörüne değer katmaktır.',
+      color: '#FF5722',
+    },
+    {
+      id: '3',
+      title: 'Kullanıcı Dostu Arayüz',
+      description:
+        'Uygulama, kullanıcı dostu arayüzü ve kapsamlı ürün veritabanıyla kullanıcıların ihtiyaçlarını karşılamak için tasarlanmıştır.',
+      color: '#4CAF50',
+    },
+    {
+      id: '4',
+      title: 'Denetimli İlaç Kullanımı Sağlama',
+      description:
+        'Uygulamanın esaslarından bir diğeri ise kullanıcıların siparişlerinin kaydını tutarak denetimsiz ilaç kullanımını önlemektir.',
+      color: '#2ba5cc',
+    },
+  ];
 
-export default function About() {
-  return (
-    <Text>
-      Burada Hakkimizda Bilgi Olacaktir..
-    </Text>
+  const renderItem = ({ item }) => (
+    <View style={[styles.itemContainer, { backgroundColor: item.color }]}>
+      <Text style={styles.itemTitle}>{item.title}</Text>
+      <Text style={styles.itemDescription}>{item.description}</Text>
+    </View>
   );
-}
-//     <ScrollView style={ globalStyles.screen }>
-//       <View style={ styles.aboutWrapper }>
-//         <View style={ styles.aboutContainer }>
-//           <View style={ styles.imageContainer }>
-//             <Image
-//               style={ styles.image }
-//               source={ require(`../assets/images/icon-no-bg.png`) }
-//             />
-//           </View>
-//           <View style={ styles.appInfoContainer }>
-//             <Text style={ styles.appVersion }>V{ app.version }</Text>
-//             <Text style={ styles.appDescription }>
-//               Authentic Pinoy Recipes is a mobile application whereby it presents different Pinoy Foods and its recipe.
-//             </Text>
-//           </View>
-//         </View>
-//       </View>
-//     </ScrollView>
-//   );
-// }
 
-// const styles = StyleSheet.create({
-//   aboutWrapper: {
-//     flex: 1,
-//     width: '100%',
-//     padding: 16,
-//   },
-//   aboutContainer: {
-//     width: '100%',
-//     alignItems: 'center',
-//   },
-//   imageContainer: {
-//     aspectRatio: 1,
-//     width: window.width/2 > 360 ? 360 : window.width/2,
-//   },
-//   image: {
-//     height: '100%',
-//     width: '100%',
-//     resizeMode: 'cover',
-//   },
-//   appInfoContainer: {
-//     width: `100%`,
-//     maxWidth: window.width/1.5 > 440 ? 440 : window.width/1.5,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   appVersion: {
-//     marginBottom: 16,
-//     fontWeight: 'bold',
-//     color: '#ccc',
-//     fontSize: window.width/16 > 36 ? 36 : window.width/16,
-//   },
-//   appDescription: {
-//     textAlign: 'center',
-//     fontSize: window.width/24 > 28 ? 28 : window.width/24,
-//     lineHeight: window.width/12 > 40 ? 40 : window.width/12,
-//     color: '#aaa'
-//   }
-//}
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.flatListContainer}
+      />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop:0,
+    flex: 1,
+    backgroundColor: '#fff',
+    padding: 16,
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
+  flatListContainer: {
+    flexGrow: 1,
+  },
+  itemContainer: {
+    borderRadius: 8,
+    padding: 16,
+    marginBottom: 16,
+  },
+  itemTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    color: '#fff',
+  },
+  itemDescription: {
+    fontSize: 16,
+    color: '#fff',
+  },
+});
+
+export default AboutScreen;

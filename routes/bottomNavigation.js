@@ -40,7 +40,7 @@ export default function BottomNavigator({ route }) {
     global.name = userInfo.name;
     global.surname = userInfo.surname;
     global.tc = userInfo.tc;
-    global.adress = userInfo.adress;
+    global.adress = userInfo.address;
     global.password = userInfo.password;
     global.email =userInfo.email;
     global.phonenumber = userInfo.phonenumber ;
@@ -220,7 +220,7 @@ export default function BottomNavigator({ route }) {
           options={{
             title: "Hesabım",
             tabBarIcon: (props) => (
-              <Icon type="material-icons" name="account" color={props.color} />
+              <Icon type="ionicon" name="person-circle-outline" color={props.color} />
             ),
           }}
         />}

@@ -2,6 +2,9 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Settings from "../screens/Settings";
 import About from "../screens/About";
+import ChangePassword from "../screens/ChangePassword";
+import MyOrdersScreen from "../screens/MyOrdersScreen";
+import Info from "../screens/Info";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,7 +25,7 @@ const SettingsStack = () => (
     <Stack.Screen
       name="Settings"
       options={({ navigation, route }) => ({
-        title: "Settings",
+        title: "Hesabım",
       })}
     >
       {(props) => <Settings {...props}/>}
@@ -30,11 +33,41 @@ const SettingsStack = () => (
     <Stack.Screen
       name="About"
       options={({ navigation, route }) => ({
-        title: "About",
+        title: "Hakkımızda",
       })}
     >
       {(props) => <About {...props}/>}
     </Stack.Screen>
+
+
+    <Stack.Screen
+      name="ChangePassScreen"
+      options={({ navigation, route }) => ({
+        title: "Şifre Değiştir",
+      })}
+    >
+      {(props) => <ChangePassword {...props}/>}
+    </Stack.Screen>
+
+    <Stack.Screen
+      name="MyOrdersScreen"
+      options={({ navigation, route }) => ({
+        title: "Siparişlerim",
+      })}
+    >
+      {(props) => <MyOrdersScreen {...props}/>}
+    </Stack.Screen>
+
+    
+    <Stack.Screen
+      name="Info"
+      options={({ navigation, route }) => ({
+        title: "Bilgilerim",
+      })}
+    >
+      {(props) => <Info {...props}/>}
+    </Stack.Screen>
+
   </Stack.Navigator>
 );
 

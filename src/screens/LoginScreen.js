@@ -40,7 +40,7 @@ export default function LoginScreen({ navigation }) {
     }
     else
     {
-        alert("Kullanıcı Bulunamadı");
+      Alert.alert('Uyarı', 'Kullanıcı Bulunamadı, Bilgilerinizi Kontrol Ediniz !', [{ text: 'Tekrar Dene' }]);
     }
   };
 
