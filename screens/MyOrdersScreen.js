@@ -53,7 +53,7 @@ const MyOrdersScreen = ({ navigation, routes }) => {
       <FlatList
         data={ordersDB}
         keyExtractor={(item) => item.orderid}
-        renderItem={(renderItem) => <MyOrdersCard params={renderItem} />}
+        renderItem={(renderItem) => <MyOrdersCard navigation={navigation} route={routes} params={renderItem} />}
         style={styles.flatlist}
       />
     </View>

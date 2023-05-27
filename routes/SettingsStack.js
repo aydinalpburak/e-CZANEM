@@ -5,6 +5,7 @@ import About from "../screens/About";
 import ChangePassword from "../screens/ChangePassword";
 import MyOrdersScreen from "../screens/MyOrdersScreen";
 import Info from "../screens/Info";
+import SparislerimEkrani from "../screens/SparislerimEkrani";
 
 const Stack = createNativeStackNavigator();
 
@@ -57,7 +58,15 @@ const SettingsStack = () => (
     >
       {(props) => <MyOrdersScreen {...props}/>}
     </Stack.Screen>
-
+    
+    <Stack.Screen
+      name="SparislerimEkrani"
+      options={({ navigation, route }) => ({
+        title: "Siparişlerim ~Detay",
+      })}
+    >
+      {(props) => <SparislerimEkrani {...props}/>}
+    </Stack.Screen>
     
     <Stack.Screen
       name="Info"

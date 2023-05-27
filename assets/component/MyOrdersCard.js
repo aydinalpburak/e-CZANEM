@@ -10,7 +10,7 @@ const ProductDeliveryStatus = ({ delivered }) => {
   );
 };
 
-export default function MyOrdersCard({ params }) {
+export default function MyOrdersCard({navigation, route, params }) {
   const [adress, setAdress] = useState(params.item.adress);
   const [medicines, setMedicines] = useState(params.item.medicines);
   const [orderid, setOrderid] = useState(params.item.orderid);
@@ -41,7 +41,9 @@ export default function MyOrdersCard({ params }) {
         Ödeme Yöntemi: <Text style={styles.date}>{orderType}</Text>
       </Text>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => {
+           navigation.push("SparislerimEkrani", [medicines,totalPrice]);
+        }}>
           <Text style={styles.buttonText}>Ürünleri Gör</Text>
         </TouchableOpacity>
       </View>
