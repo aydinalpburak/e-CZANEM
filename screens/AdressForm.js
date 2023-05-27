@@ -54,7 +54,7 @@ export default function AddressForm({ navigation, route }) {
     }  
     else
     {
-      alert("Lütfen Tüm Alanları Doldurunuz !");
+      Alert.alert('Bilgilendirme', 'Lütfen Tüm Alanları Doldurunuz !', [{ text: 'Tamam' }]);;
     }
   };
 

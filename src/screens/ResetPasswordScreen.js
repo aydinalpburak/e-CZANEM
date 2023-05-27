@@ -6,17 +6,32 @@ import Header from '../components/Header'
 import TextInput from '../components/TextInput'
 import Button from '../components/Button'
 import { emailValidator } from '../helpers/emailValidator'
+import getRequest from '../../assets/component/getRequest'
+import { Alert } from 'react-native'
+
 
 export default function ResetPasswordScreen({ navigation }) {
   const [email, setEmail] = useState({ value: '', error: '' })
 
-  const sendResetPasswordEmail = () => {
+  const sendResetPasswordEmail = async () => {
     const emailError = emailValidator(email.value)
     if (emailError) {
       setEmail({ ...email, error: emailError })
       return
     }
-    navigation.navigate('LoginScreen')
+    var baseurl = "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/getSendMailPass?email=";
+    baseurl = baseurl + email.value; 
+    var result = await getRequest(baseurl)
+    if(result != null)
+    {
+      Alert.alert('Başarılı', 'Şifreniz Başarı İle Gönderildi.', [{ text: 'Tamam' }]);
+      navigation.navigate('LoginScreen')
+    }
+    else
+    {
+      Alert.alert('Başarısız', 'Kullanıcı Bulunamadı !', [{ text: 'Tamam' }]);
+    }
+    
   }
 
   return (
@@ -42,7 +57,7 @@ export default function ResetPasswordScreen({ navigation }) {
         onPress={sendResetPasswordEmail}
         style={{ marginTop: 16 }}
       >
-        Yeni Parola Gönder
+        Parolayı Gönder
       </Button>
     </Background>
   )
