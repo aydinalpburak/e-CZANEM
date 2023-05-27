@@ -68,7 +68,7 @@ export default function FoodCardForOrders({ navigation, route, params }) {
                 marginLeft: 20,
               }}
             >
-              <Text style={{ marginHorizontal: 10, fontSize: 16 }}>
+              <Text style={styles.foodTypesLabel}>
                 Adet: {count}
               </Text>
             </View>
