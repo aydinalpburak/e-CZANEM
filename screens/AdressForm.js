@@ -13,6 +13,7 @@ import CustomButton from "../assets/component/CustomButton";
 import * as Location from "expo-location";
 import Background from "../src/components/Background";
 import Popup from "../assets/component/Popup";
+import { Alert } from "react-native";
 
 
 const { height } = Dimensions.get("window");
@@ -27,6 +28,8 @@ export default function AddressForm({ navigation, route }) {
   const [city, setCity] = useState("");
   const [district, setDistrict] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [lat,setLat] = useState("");
+  const [longt,setLongt] = useState("");
   const [address, setAddress] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -48,7 +51,10 @@ export default function AddressForm({ navigation, route }) {
       let adressString = `Kapı No:${doorNumber} Kat:${floorNumber} Bina No:${buildingNumber} ${street} ${neighborhood} ${district} ${city}`;
       const AdressAndBasketInfo ={
         urunler: sepet,
-        adress: adressString
+        adress: adressString,
+        phonenumber: phoneNumber,
+        lat: lat,
+        longt: longt
       }
       navigation.push("PaymentScreen",AdressAndBasketInfo); //todo odeme ekranina kisinin bilgisi gonderilecek...
     }  
@@ -86,11 +92,13 @@ export default function AddressForm({ navigation, route }) {
     let location = await Location.getCurrentPositionAsync({
       enableHighAccuracy: true,
     });
+    setLongt(location.coords.longitude);
+    setLat(location.coords.latitude);
     //console.log(location);
     const reverseGeocode = async () => {
       const reverseGeocodedAddress = await Location.reverseGeocodeAsync({
         longitude: location.coords.longitude,
-        latitude: location.coords.latitude,
+        latitude: location.coords.latitude,        
       });
       setAddress(reverseGeocodedAddress);
     };

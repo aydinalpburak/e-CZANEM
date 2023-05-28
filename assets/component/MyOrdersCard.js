@@ -16,6 +16,8 @@ export default function MyOrdersCard({navigation, route, params }) {
   const [orderid, setOrderid] = useState(params.item.orderid);
   const [orderType, setOrderType] = useState(params.item.ordertype);
   const [userid, setUserId] = useState(params.item.userid);
+  const [date, setDate] = useState(params.item.date);
+  const [status, setStatus] = useState(params.item.status);
   const [totalPrice, setTotalPrice] = useState(toplam());
 
   function toplam()
@@ -26,16 +28,17 @@ export default function MyOrdersCard({navigation, route, params }) {
     })
     return result.toFixed(2);
   }
+
   return (
     <View style={styles.itemContainer}>
       <Text style={styles.orderNumber}>Sipariş Numarası: {orderid}</Text>
-      <Text style={[styles.date,{fontWeight: "bold"}]}>Sipariş Tarihi: <Text style={styles.date}>21.05.23</Text> </Text>
+      <Text style={[styles.date,{fontWeight: "bold"}]}>Sipariş Tarihi: <Text style={styles.date}>{date}</Text> </Text>
       <Text style={[styles.date,{fontWeight: "bold"}]}>
         Adres: <Text style={styles.date}>{adress}</Text>
       </Text>
       <Text style={[styles.date,{fontWeight: "bold"}]}>Sipariş Toplamı: <Text style={styles.date}>{totalPrice}</Text></Text>
       <Text style={[styles.date,{fontWeight: "bold"}]}>
-        Sipariş Durumu: <Text style={styles.date}>Nerde Bilmiom Gardas</Text>
+        Sipariş Durumu: <Text style={styles.date}>{status}</Text>
       </Text>
       <Text style={[styles.date,{fontWeight: "bold"}]}>
         Ödeme Yöntemi: <Text style={styles.date}>{orderType}</Text>

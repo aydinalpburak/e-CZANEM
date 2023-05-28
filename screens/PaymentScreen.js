@@ -38,7 +38,12 @@ export default function PaymentPage({ navigation, route }) {
         adress: adress,
         orderid: orderid,
         medicines: medicines,
-        ordertype: ordertype
+        ordertype: ordertype,
+        date: getCurrentDate(),
+        phonenumber: infoValues.phonenumber,
+        status: "Sıpariş Oluşturuldu",
+        lat: infoValues.lat.toString(),
+        longt: infoValues.longt.toString()
       };
       const response = await axios.post(url, postData);
       return response.data;
@@ -47,6 +52,26 @@ export default function PaymentPage({ navigation, route }) {
       return null;
     }
   }
+
+  function getCurrentDate() {
+    var today = new Date();
+    var day = today.getDate();
+    var month = today.getMonth() + 1; // JavaScript'te aylar 0-11 aralığında indekslenir, bu yüzden 1 ekliyoruz.
+    var year = today.getFullYear();
+  
+    // Tarih değerlerini dd/mm/yyyy formatına dönüştürme
+    if (day < 10) {
+      day = '0' + day;
+    }
+  
+    if (month < 10) {
+      month = '0' + month;
+    }
+  
+    var formattedDate = day + '/' + month + '/' + year;
+    return formattedDate;
+  }
+  
   function getRandomNumber() {
     return Math.floor(Math.random() * 500001); // 0 ile 500000 arasında rastgele bir sayı
   }
@@ -128,7 +153,7 @@ export default function PaymentPage({ navigation, route }) {
       ]);
     }
   }
-  function handleAtDoorPayment() {
+  async function  handleAtDoorPayment() {
     let url =
       "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/makeOrder";
     let userid = global.userid;
@@ -136,9 +161,17 @@ export default function PaymentPage({ navigation, route }) {
     let orderid = _orderid;
     let medicines = infoValues.urunler;
     let ordertype = "Kapıda Ödeme";
-    postRequestMakeOrder(url, userid, adress, orderid, medicines, ordertype).then(favorites.deleteAllFavoritesGivenUser(global.userid)).then(global.items=[]);
-    setIsDisabled(true);
-    setIsPaymentSuccessModalVisible(true);
+    var x = await postRequestMakeOrder(url, userid, adress, orderid, medicines, ordertype).then(favorites.deleteAllFavoritesGivenUser(global.userid)).then(global.items=[]);
+    if(x.status_code == 200)
+    {
+      setIsDisabled(true);
+      setIsPaymentSuccessModalVisible(true);
+    }
+    else
+    {
+      Alert.alert("Hata", "Spariş Alınırken Hata Oluştu !", [{ text: 'Tekrar Deneyiniz' }]);
+    }
+
   }
 
   function handlePaymentAtDoorClick() {
