@@ -25,11 +25,6 @@ export default function Favorites({ navigation, route }) {
   }, [favorites.foods]);
 
   function get2globalArray(favorites) {
-    // console.log(`Tetiklendi`);
-    // global.items.forEach((element) => {
-    //   console.log(`GUNCEL DURUM ${element.id} ${element.count} ${element.price}`);
-    // });
-    //console.log(`---------------------------------------------------`);
     for (let i = 0; i < favorites.length; i++) {
       let newProduct = {
         id: favorites[i].T1.id,
@@ -45,9 +40,9 @@ export default function Favorites({ navigation, route }) {
       });
       if (!isFound) {
         global.items.push(newProduct);
-        // console.log(
-        //   `Eklendi ${newProduct.id} ${newProduct.count} ${newProduct.price}`
-        // );
+        console.log(
+          `Eklendi ${newProduct.id} ${newProduct.count} ${newProduct.price}`
+        );
         setTotalPrice(getTotalPrice);
       }
     }
@@ -109,6 +104,7 @@ export default function Favorites({ navigation, route }) {
                 }}
               ></View>
             )}
+            keyExtractor={(item) => item.T1.id}
             renderItem={({ item }) => (
               <FoodCard
                 navigation={navigation}

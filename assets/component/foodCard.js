@@ -1,11 +1,12 @@
 import React from "react";
-import { useState } from "react";
-import { Image, StyleSheet, TouchableOpacity } from "react-native";
+import { useState, useEffect } from "react";
+import { Alert, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "react-native";
 import { View } from "react-native";
 import medicineCategory from "../FoodsDB/foodCategories";
 import { Ionicons } from "@expo/vector-icons";
 import "../globals/priceBasket";
+import getRequest from "../component/getRequest";
 
 var baseUrlString = "https://drive.google.com/uc?export=view&id=";
 
@@ -16,7 +17,7 @@ export default function FoodCard({
   isSearch,
   setTotalPrice,
 }) {
-  const backgroundColor = food.isreceteli === "true" ? "#F38E78" : 'white';
+  const backgroundColor = food.isreceteli === "true" ? "#F38E78" : "white";
   food.image = baseUrlString + food?.image1;
   const [medicineColor, setMedicineColor] = useState(() => {
     let result = medicineCategory.filter(({ name }) => name == food.type[0])[0];
@@ -28,8 +29,24 @@ export default function FoodCard({
   });
 
   const [count, setCount] = useState(1);
+  const [maxCount, setMaxCount] = useState(250000);
+
+  const fetchMaxCount = async (_pharmacyId, _foodid) => {
+    let url =
+      "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/getMaxStock?pharmacyid=" +
+      _pharmacyId +
+      "&foodid=" +
+      _foodid;
+    const getOrders = await getRequest(url);
+    if (getOrders) {
+      setMaxCount(getOrders);
+      return getOrders;
+    }
+  };
+
 
   const decrementCount = () => {
+    
     var newCount = 1;
     if (count > 1) {
       newCount = count - 1;
@@ -41,11 +58,24 @@ export default function FoodCard({
     setCount(newCount);
   };
 
-  const incrementCount = () => {
-    const newCount = count + 1;
-    updateCountById(food.id, newCount, global.items);
-    setTotalPrice(getTotalPrice);
-    setCount(newCount);
+  const incrementCount = async ()  => {
+    for (let i = 0; i < global.items.length; i++) {
+      if ( global.items[i].id === food.id) {
+        await fetchMaxCount(global.items[i].pharmacyid,global.items[i].id).catch((error) => {
+          alert(error);
+        });
+        break;
+      }
+    }
+    var newCount = count + 1;
+    if (newCount <= maxCount) {
+      updateCountById(food.id, newCount, global.items);
+      setTotalPrice(getTotalPrice);
+      setCount(newCount);
+    } else {
+      newCount = newCount -1;
+      Alert.alert("Uyarı !", "Stok Yetersiz.", [{ text: 'Tamam' }]);
+    }
   };
 
   function updateCountById(id, count, arrGlobal) {
@@ -55,11 +85,6 @@ export default function FoodCard({
         break;
       }
     }
-    // global.items.forEach((element) => {
-    //   console.log(
-    //     `GUNCEL DURUM ${element.id} ${element.count} ${element.price}`
-    //   );
-    // });
   }
 
   function getTotalPrice() {
@@ -89,7 +114,7 @@ export default function FoodCard({
             },
           ]}
         ></View>
-        <View style={[styles.cardDetailsContainer,{backgroundColor}]}>
+        <View style={[styles.cardDetailsContainer, { backgroundColor }]}>
           <Text style={{ color: "#333", fontWeight: "bold", fontSize: 16 }}>
             {food.name}
           </Text>
@@ -122,14 +147,14 @@ export default function FoodCard({
                   <Ionicons
                     name="remove-circle-outline"
                     size={24}
-                    color="black"
+                    color="red"
                   />
                 </TouchableOpacity>
                 <Text style={{ marginHorizontal: 10, fontSize: 16 }}>
                   {count}
                 </Text>
                 <TouchableOpacity onPress={incrementCount}>
-                  <Ionicons name="add-circle-outline" size={24} color="black" />
+                  <Ionicons name="add-circle-outline" size={32} color="green" />
                 </TouchableOpacity>
               </View>
             )}
@@ -149,7 +174,6 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   cardContainer: {
-    height: 96,
     backgroundColor: "white",
     flexDirection: "row",
     elevation: 2,
