@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { Alert } from "react-native";
+import axios from "axios";
 
 const countries = [
   {
@@ -104,7 +105,7 @@ const countries = [
 ];
 
 const Info = ({ navigation, routes }) => {
-  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState(global.ulke);
   const [selectedCity, setSelectedCity] = useState("");
   const [formError, setFormError] = useState(false);
 
@@ -128,18 +129,51 @@ const Info = ({ navigation, routes }) => {
   };
 
   let [formData, setFormData] = useState([
-    { label: "Ad - Soyad", value: global.name },
+    { label: "Ad - Soyad", value: global.name + " " + global.surname },
     {
       label: "Telefon Numarası (11 Haneli Giriniz)",
       value: global.phonenumber,
     },
     { label: "E-posta", value: global.email },
-    { label: "Önemli Hastalıklar (Yoksa Boş Bırakınız)", value: "" },
+    {
+      label: "Önemli Hastalıklar (Yoksa Boş Bırakınız)",
+      value: global.hastaliklar,
+    },
     { label: "Açık Adres", value: global.adress },
-    { label: "Doğum Tarihi", value: { day: "", month: "", year: "" } },
-    { label: "Ülke", value: { country: "" } },
-    { label: "Şehir", value: { city: "" } }, //todo ulke ve sehir ayriyeten gelsin
+    {
+      label: "Doğum Tarihi",
+      value: { day: global.gun, month: global.ay, year: global.yil },
+    },
+    { label: "Ülke", value: { country: global.ulke } },
+    { label: "Şehir", value: { city: global.sehir } }, //todo ulke ve sehir ayriyeten gelsin
   ]);
+  async function postRequestUpdate() {
+    try {
+      const postData = {
+        id: global.userid,
+        name: formData[0].value.split(" ")[0],
+        surname: formData[0].value.split(" ")[1],
+        phonenumber: formData[1].value,
+        email: formData[2].value,
+        hastaliklar: formData[3].value,
+        address: formData[4].value,
+        bdate:
+          formData[5].value.day +
+          "/" +
+          formData[5].value.month +
+          "/" +
+          formData[5].value.year,
+        candc: formData[7].value.city + "/" + formData[6].value.country,
+      };
+      const response = await axios.post(
+        "http://eczanev2-dev.eu-central-1.elasticbeanstalk.com/api/updateUserInfo",
+        postData
+      );
+      return response.data;
+    } catch (error) {
+      return null;
+    }
+  }
 
   const handleChangeText = (text, index) => {
     let updatedFormData = [...formData];
@@ -153,7 +187,7 @@ const Info = ({ navigation, routes }) => {
     setFormData(updatedFormData);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     let validateForm = () => {
       for (let item of formData) {
         if (
@@ -166,33 +200,57 @@ const Info = ({ navigation, routes }) => {
             return false;
           }
         }
+        return true;
       }
-      return true;
-    };
 
-    setFormError(false);
+      setFormError(false);
 
-    if (!validateForm()) {
-      setFormError(true);
-    } else {
-      let phoneNumber = formData.find(
-        (item) => item.label === "Telefon Numarası (11 Haneli Giriniz)"
-      ).value;
-      if (!validatePhoneNumber(phoneNumber)) {
+      if (!validateForm()) {
         setFormError(true);
-        return;
-      }
+      } else {
+        let phoneNumber = formData.find(
+          (item) => item.label === "Telefon Numarası (11 Haneli Giriniz)"
+        ).value;
+        if (!validatePhoneNumber(phoneNumber)) {
+          setFormError(true);
+          return;
+        }
 
-      let email = formData.find((item) => item.label === "E-posta").value;
-      if (!validateEmail(email)) {
-        setFormError(true);
-        return;
+        let email = formData.find((item) => item.label === "E-posta").value;
+        if (!validateEmail(email)) {
+          setFormError(true);
+          return;
+        }
       }
-      Alert.alert("Başarılı", "Bilgileriniz başarıyla güncellendi.", [
-        { text: "Tamam" },
-      ]);
       // Submit form data
       console.log(formData);
+    };
+    //Db Gonderme Asamasi
+    var resultFromDb = await postRequestUpdate();
+    if (resultFromDb != undefined && resultFromDb.status_code == "200") {
+      Alert.alert(
+        "Bilgilendirme",
+        "Kullanıcı Bilgileri Güncellendi, İşlem Başarılı !",
+        [{ text: "Tamam" }]
+      );
+      //globalleri degistirme zamani
+      global.name = formData[0].value.split(" ")[0];
+      global.surname = formData[0].value.split(" ")[1];
+      global.phonenumber = formData[1].value;
+      global.email = formData[2].value;
+      global.hastaliklar = formData[3].value;
+      global.adress = formData[4].value;
+      global.gun = formData[5].value.day;
+      global.ay = formData[5].value.month;
+      global.yil = formData[5].value.year;
+      global.ulke = formData[6].value.country;
+      global.sehir = formData[7].value.city;
+    } else {
+      Alert.alert(
+        "Uyarı",
+        "Kullanıcı Bilgileri Güncellenemedi, Bilgilerinizi Kontrol Ediniz !",
+        [{ text: "Tekrar Dene" }]
+      );
     }
   };
 

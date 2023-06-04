@@ -43,7 +43,16 @@ export default function BottomNavigator({ route }) {
     global.adress = userInfo.address;
     global.password = userInfo.password;
     global.email =userInfo.email;
-    global.phonenumber = userInfo.phonenumber ;
+    global.phonenumber = userInfo.phonenumber;
+    global.hastaliklar = userInfo.hastaliklar;
+    var dateParts = userInfo.bdate.split("/");
+    global.gun = dateParts[0];
+    global.ay = dateParts[1];
+    global.yil = dateParts[2];
+    var candcParts = userInfo.candc.split("/");
+    global.sehir = candcParts[0];
+    global.ulke = candcParts[1];
+
     //--------------User Global Values End--------------
     getData()
       .then((data) => {

@@ -10,6 +10,12 @@ global.adress = "";
 global.password = "";
 global.email = "";
 global.phonenumber = "";
+global.hastaliklar = "";
+global.gun = "";
+global.ay = "";
+global.yil = "";
+global.ulke = "";
+global.sehir = "";
 
 
 
