@@ -68,7 +68,7 @@ export default function FoodRecipe({ recipe }) {
           renderItem={({ item, index }) => (
             <View style={ styles.instructionWrapper }>
               <View style={ styles.instructionContainer }>
-                <Text style={ styles.instructionNumberContainer }>Adım { index + 1 }</Text>
+                <Text style={ styles.instructionNumberContainer }>Talimatlar { index + 1 }</Text>
                 <View style={ styles.instruction }>
                   <Text style={ styles.instructionText }>{ item }</Text>
                 </View>
@@ -108,7 +108,7 @@ export default function FoodRecipe({ recipe }) {
         <View>
           <View style={ styles.nutritionContainer }>
             <View style={ [ styles.nutritionWrapper, tableStyles.container, tableStyles.border] }>
-              <Text style={ tableStyles.title }>ICINDEKILER</Text>
+              <Text style={ tableStyles.title }>İçindekiler</Text>
               {recipe.nutrition.map((nutri, index) => {
                 return(
                   <View key={ index } style={ tableStyles.twoColumns }>

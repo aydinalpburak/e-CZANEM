@@ -14,6 +14,16 @@ const medicineCategory = [
     image: require('./images/category/hap.jpg'),
     color: '#A1C298',
   },
+  {
+    name: 'Şurup',
+    image: require('./images/category/hap.jpg'),
+    color: '#A1C298',
+  },
+  {
+    name: 'Çözelti',
+    image: require('./images/category/hap.jpg'),
+    color: '#A1C298',
+  },
 ];
 
 export default medicineCategory;
