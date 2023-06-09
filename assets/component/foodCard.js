@@ -46,7 +46,9 @@ export default function FoodCard({
 
 
   const decrementCount = () => {
-    
+    if (food.isreceteli === "true"){
+      return;
+    }
     var newCount = 1;
     if (count > 1) {
       newCount = count - 1;
@@ -59,6 +61,9 @@ export default function FoodCard({
   };
 
   const incrementCount = async ()  => {
+    if (food.isreceteli === "true"){
+      return;
+    }
     for (let i = 0; i < global.items.length; i++) {
       if ( global.items[i].id === food.id) {
         await fetchMaxCount(global.items[i].pharmacyid,global.items[i].id).catch((error) => {
